@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>前洲小学跆拳道服装售卖</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #1a1a2e;
+    font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+  }
+  .poster {
+    width: 520px;
+    background: linear-gradient(160deg, #0d0d0d 0%, #1a0505 50%, #0d0d0d 100%);
+    border-radius: 24px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,215,0,0.2);
+  }
+
+  /* 顶部装饰光 */
+  .poster::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 300px; height: 2px;
+    background: linear-gradient(90deg, transparent, #ffd700, transparent);
+  }
+
+  /* Header */
+  .header {
+    padding: 32px 32px 24px;
+    text-align: center;
+    position: relative;
+  }
+  .header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,215,0,0.1);
+    border: 1px solid rgba(255,215,0,0.3);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 11px;
+    color: #ffd700;
+    letter-spacing: 2px;
+    margin-bottom: 14px;
+  }
+  .header-badge::before { content: '★'; }
+  .header-badge::after  { content: '★'; }
+  .title-main {
+    font-size: 28px;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: 2px;
+    text-shadow: 0 0 30px rgba(255,215,0,0.4);
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  .title-sub {
+    font-size: 13px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 4px;
+    margin-top: 6px;
+  }
+  .title-highlight {
+    color: #ffd700;
+  }
+
+  /* 产品信息 */
+  .product-section {
+    padding: 0 28px 20px;
+  }
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #ffd700;
+    letter-spacing: 2px;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .section-title::before {
+    content: '';
+    width: 3px; height: 14px;
+    background: #ffd700;
+    border-radius: 2px;
+  }
+
+  .product-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 24px;
+    text-align: center;
+  }
+  .product-icon {
+    font-size: 64px;
+    margin-bottom: 16px;
+  }
+  .product-name {
+    font-size: 20px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+  .product-desc {
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+  .price-box {
+    background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,215,0,0.05));
+    border: 2px solid rgba(255,215,0,0.3);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+  .price-label {
+    font-size: 11px;
+    color: rgba(255,215,0,0.7);
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+  }
+  .price-value {
+    font-size: 42px;
+    font-weight: 900;
+    color: #ffd700;
+    line-height: 1;
+    text-shadow: 0 0 30px rgba(255,215,0,0.3);
+  }
+  .price-unit {
+    font-size: 16px;
+    font-weight: 600;
+    color: rgba(255,215,0,0.8);
+  }
+  .price-tag {
+    display: inline-block;
+    background: #ff4757;
+    color: #fff;
+    font-size: 11px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-left: 10px;
+    font-weight: 700;
+  }
+
+  /* 规格选择 */
+  .specs-section {
+    padding: 0 28px 20px;
+  }
+  .specs-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .spec-item {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 12px 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .spec-item:hover {
+    background: rgba(255,215,0,0.1);
+    border-color: rgba(255,215,0,0.4);
+  }
+  .spec-size {
+    font-size: 18px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+  .spec-desc {
+    font-size: 10px;
+    color: rgba(255,255,255,0.4);
+  }
+
+  /* 分隔线 */
+  .divider {
+    margin: 0 28px 20px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,215,0,0.2), transparent);
+  }
+
+  /* 温馨提示 */
+  .tips-box {
+    margin: 0 28px 24px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 12px;
+    padding: 14px 16px;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .tips-title {
+    font-size: 11px;
+    color: rgba(255,215,0,0.7);
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .tips-list {
+    list-style: none;
+  }
+  .tips-list li {
+    font-size: 11px;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.8;
+    padding-left: 12px;
+    position: relative;
+  }
+  .tips-list li::before {
+    content: '·';
+    position: absolute;
+    left: 0;
+    color: #ffd700;
+  }
+
+  /* CTA按钮 */
+  .cta-section {
+    padding: 0 28px 28px;
+  }
+  .cta-btn {
+    display: block;
+    width: 100%;
+    background: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%);
+    color: #1a0a00;
+    font-size: 18px;
+    font-weight: 800;
+    padding: 16px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(255,215,0,0.3);
+    transition: all 0.3s;
+  }
+  .cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(255,215,0,0.4);
+  }
+  .cta-sub {
+    text-align: center;
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    margin-top: 12px;
+  }
+
+  /* Footer */
+  .footer {
+    background: rgba(0,0,0,0.4);
+    padding: 14px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .footer-logo-icon {
+    width: 28px; height: 28px;
+    background: linear-gradient(135deg, #ffd700, #ff8c00);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 800; color: #1a0a00;
+  }
+  .footer-logo-text {
+    font-size: 13px; font-weight: 700; color: #ffd700;
+  }
+  .footer-logo-sub { font-size: 8px; color: rgba(255,255,255,0.3); letter-spacing: 1px; }
+  .footer-hotline { text-align: right; }
+  .footer-hotline-label { font-size: 9px; color: rgba(255,255,255,0.3); margin-bottom: 2px; }
+  .footer-hotline-num { font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.7); letter-spacing: 1px; }
+
+  @media print {
+    body { background: white; }
+    .poster { box-shadow: none; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+<div class="poster">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-badge">限时特惠订购</div>
+    <div class="title-main">
+      110-170<br><span class="title-highlight">跆拳道道服</span>
+    </div>
+    <div class="title-sub">TAKEWONDO UNIFORM · LIMITED OFFER</div>
+  </div>
+
+  <!-- 产品信息 -->
+  <div class="product-section">
+    <div class="section-title">产品介绍</div>
+    <div class="product-card">
+      <div class="product-icon">🥋</div>
+      <div class="product-name">功夫之星专业道服</div>
+      <div class="product-desc">
+        孩子训练更安全、更体面,一套到位
+      </div>
+
+      <div class="price-box">
+        <div class="price-label">限时特惠价</div>
+        <div class="price-value">
+          <span class="price-unit">¥</span>100
+        </div>
+        <div style="font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 8px;">
+          <span style="text-decoration: line-through;">原价¥200</span> · 节省¥100
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 规格选择 -->
+  <div class="specs-section">
+    <div class="section-title">尺码参考(按身高选)</div>
+    <div class="specs-grid">
+      <div class="spec-item">
+        <div class="spec-size">110</div>
+        <div class="spec-desc">身高115cm以下</div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-size">120</div>
+        <div class="spec-desc">身高125cm以下</div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-size">130</div>
+        <div class="spec-desc">身高125cm及以上</div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-size">140</div>
+        <div class="spec-desc">身高135cm及以上</div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-size">150</div>
+        <div class="spec-desc">身高145cm及以上</div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-size">160</div>
+        <div class="spec-desc">身高155cm及以上</div>
+      </div>
+      <div class="spec-item" style="grid-column: span 1;">
+        <div class="spec-size">170</div>
+        <div class="spec-desc">身高165cm及以上</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 产品特点 -->
+  <div class="tips-box" style="margin: 0 28px 16px;">
+    <div class="tips-title">产品特点</div>
+    <ul class="tips-list">
+      <li>专业跆拳道面料,透气不闷汗</li>
+      <li>宽松剪裁,动作舒展不束缚</li>
+      <li>统一着装,仪式感强、更守礼仪</li>
+      <li>尺码提示:道服版型偏大,按孩子日常正常身高选码即可</li>
+    </ul>
+  </div>
+
+  <!-- 温馨提示 -->
+  <div class="tips-box">
+    <div class="tips-title">下单备注</div>
+    <ul class="tips-list">
+      <li>姓名 + 班级 + 身高 + 选穿尺码</li>
+      <li>现场核对领取,便捷省心</li>
+    </ul>
+  </div>
+
+  <!-- CTA按钮 -->
+  <div class="cta-section">
+    <a href="https://party.hudongba.com/party/6uua7.html" class="cta-btn" target="_blank">
+      🎁 立即下单订购
+    </a>
+    <div class="cta-sub">限时特惠 · 点击跳转互动吧完成报名</div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-logo">
+      <div class="footer-logo-icon">功</div>
+      <div>
+        <div class="footer-logo-text">功夫之星武道馆</div>
+        <div class="footer-logo-sub">KUNGFU STAR MARTIAL ARTS</div>
+      </div>
+    </div>
+    <div class="footer-hotline">
+      <div class="footer-hotline-label">咨询热线</div>
+      <div class="footer-hotline-num">0510-82405444</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
