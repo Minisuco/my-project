@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>功夫之星工作牌设计稿</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #f2f2f2;
+    font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+    padding: 40px 30px;
+  }
+  h1 {
+    text-align: center;
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 6px;
+  }
+  .subtitle {
+    text-align: center;
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 36px;
+  }
+
+  /* ====== 工作牌展示区 ====== */
+  .showcase {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    justify-content: center;
+    margin-bottom: 50px;
+  }
+  .badge-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .badge-label {
+    font-size: 12px;
+    color: #888;
+    letter-spacing: 1px;
+  }
+
+  /* 工作牌主体 — 横款 86×54mm 比例 */
+  .badge {
+    width: 258px;
+    height: 163px;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+  }
+
+  /* 正面 */
+  .badge-front {
+    background: linear-gradient(135deg, #6b0000 0%, #8B0000 45%, #a00000 100%);
+    display: flex;
+    flex-direction: column;
+  }
+  .badge-front .top-bar {
+    background: rgba(0,0,0,0.3);
+    padding: 7px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .badge-front .logo-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .badge-front .logo-box {
+    width: 22px; height: 22px;
+    background: linear-gradient(135deg, #FFD700, #FF8C00);
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 900; color: #6b0000;
+  }
+  .badge-front .org-name {
+    font-size: 12px;
+    font-weight: 700;
+    color: #FFD700;
+    letter-spacing: 1px;
+  }
+  .badge-front .org-en {
+    font-size: 7px;
+    color: rgba(255,215,0,0.6);
+    letter-spacing: 1.5px;
+  }
+  .badge-front .no {
+    font-size: 9px;
+    color: rgba(255,255,255,0.4);
+  }
+
+  .badge-front .body {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding: 10px 14px;
+    gap: 12px;
+  }
+  .badge-front .avatar {
+    width: 52px; height: 64px;
+    background: rgba(255,255,255,0.12);
+    border-radius: 6px;
+    border: 1.5px solid rgba(255,215,0,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; color: rgba(255,255,255,0.35); text-align: center;
+    line-height: 1.5; flex-shrink: 0;
+  }
+  .badge-front .info { flex: 1; }
+  .badge-front .staff-name {
+    font-size: 20px;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+  }
+  .badge-front .staff-title {
+    display: inline-block;
+    background: rgba(255,215,0,0.15);
+    border: 1px solid rgba(255,215,0,0.4);
+    color: #FFD700;
+    font-size: 10px;
+    border-radius: 3px;
+    padding: 2px 8px;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  .badge-front .staff-branch {
+    font-size: 9px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 1px;
+  }
+
+  .badge-front .bottom-bar {
+    background: rgba(0,0,0,0.2);
+    padding: 5px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .badge-front .slogan {
+    font-size: 8px;
+    color: rgba(255,215,0,0.5);
+    letter-spacing: 2px;
+  }
+  .badge-front .hotline {
+    font-size: 8px;
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 0.5px;
+  }
+
+  /* 背面 */
+  .badge-back {
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+  }
+  .badge-back .back-header {
+    background: #8B0000;
+    padding: 8px 14px;
+    text-align: center;
+  }
+  .badge-back .back-header-text {
+    font-size: 11px;
+    color: #FFD700;
+    font-weight: 700;
+    letter-spacing: 2px;
+  }
+  .badge-back .back-body {
+    flex: 1;
+    padding: 10px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+  .badge-back .back-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 10px;
+    color: #444;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 6px;
+  }
+  .badge-back .back-row:last-child { border-bottom: none; }
+  .badge-back .back-icon {
+    width: 16px; height: 16px;
+    background: #8B0000;
+    border-radius: 3px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 8px; color: white; flex-shrink: 0;
+  }
+  .badge-back .back-label { color: #999; width: 36px; flex-shrink: 0; }
+  .badge-back .back-val { color: #333; font-weight: 500; }
+  .badge-back .back-footer {
+    background: #f8f8f8;
+    padding: 6px 14px;
+    text-align: center;
+    font-size: 8px;
+    color: #bbb;
+    letter-spacing: 1px;
+    border-top: 1px solid #eee;
+  }
+
+  /* ====== 商家下单清单 ====== */
+  .order-section {
+    max-width: 760px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  }
+  .order-section h2 {
+    font-size: 16px;
+    color: #8B0000;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .order-section h2::before {
+    content: '';
+    width: 4px; height: 18px;
+    background: #8B0000;
+    border-radius: 2px;
+    display: inline-block;
+  }
+  .order-desc {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 24px;
+    padding-left: 12px;
+  }
+
+  .spec-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 24px;
+    font-size: 13px;
+  }
+  .spec-table th {
+    background: #8B0000;
+    color: white;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+  }
+  .spec-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid #f0f0f0;
+    color: #333;
+    vertical-align: top;
+  }
+  .spec-table tr:nth-child(even) td { background: #fafafa; }
+  .spec-table .tag {
+    display: inline-block;
+    background: #fff3e0;
+    color: #e65100;
+    font-size: 11px;
+    padding: 1px 7px;
+    border-radius: 3px;
+    border: 1px solid #ffe0b2;
+  }
+
+  .staff-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-bottom: 20px;
+  }
+  .staff-table th {
+    background: #5d0000;
+    color: white;
+    padding: 9px 12px;
+    text-align: center;
+    font-weight: 600;
+  }
+  .staff-table td {
+    padding: 9px 12px;
+    border-bottom: 1px solid #f0f0f0;
+    text-align: center;
+    color: #333;
+  }
+  .staff-table tr:nth-child(even) td { background: #fafafa; }
+
+  .tip-box {
+    background: #fff8e1;
+    border: 1px solid #ffe082;
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-size: 12px;
+    color: #5d4037;
+    line-height: 2;
+  }
+  .tip-box strong { color: #8B0000; }
+</style>
+</head>
+<body>
+
+<h1>功夫之星武道馆 · 工作牌设计稿</h1>
+<div class="subtitle">提供给淘宝商家的设计参考 & 下单内容清单</div>
+
+<!-- ===== 工作牌效果预览 ===== -->
+<div class="showcase">
+
+  <!-- 正面示例1：教练 -->
+  <div class="badge-wrap">
+    <div class="badge-label">正面 · 示例（教练）</div>
+    <div class="badge badge-front">
+      <div class="top-bar">
+        <div class="logo-row">
+          <div class="logo-box">功</div>
+          <div>
+            <div class="org-name">功夫之星武道馆</div>
+            <div class="org-en">KUNGFU STAR MARTIAL ARTS</div>
+          </div>
+        </div>
+        <div class="no">NO. 001</div>
+      </div>
+      <div class="body">
+        <div class="avatar">照片<br>1寸</div>
+        <div class="info">
+          <div class="staff-name">王教练</div>
+          <div class="staff-title">跆拳道教练</div>
+          <div class="staff-branch">惠山区省锡中店</div>
+        </div>
+      </div>
+      <div class="bottom-bar">
+        <div class="slogan">以武砺心 · 逐梦启航</div>
+        <div class="hotline">0510-82405444</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 正面示例2：校长 -->
+  <div class="badge-wrap">
+    <div class="badge-label">正面 · 示例（校长）</div>
+    <div class="badge badge-front">
+      <div class="top-bar">
+        <div class="logo-row">
+          <div class="logo-box">功</div>
+          <div>
+            <div class="org-name">功夫之星武道馆</div>
+            <div class="org-en">KUNGFU STAR MARTIAL ARTS</div>
+          </div>
+        </div>
+        <div class="no">NO. 001</div>
+      </div>
+      <div class="body">
+        <div class="avatar">照片<br>1寸</div>
+        <div class="info">
+          <div class="staff-name">程全</div>
+          <div class="staff-title">校　　长</div>
+          <div class="staff-branch">总部</div>
+        </div>
+      </div>
+      <div class="bottom-bar">
+        <div class="slogan">以武砺心 · 逐梦启航</div>
+        <div class="hotline">0510-82405444</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 背面 -->
+  <div class="badge-wrap">
+    <div class="badge-label">背面（通用）</div>
+    <div class="badge badge-back">
+      <div class="back-header">
+        <div class="back-header-text">功夫之星武道馆</div>
+      </div>
+      <div class="back-body">
+        <div class="back-row">
+          <div class="back-icon">📍</div>
+          <div class="back-label">总部</div>
+          <div class="back-val">无锡市惠山区</div>
+        </div>
+        <div class="back-row">
+          <div class="back-icon">📞</div>
+          <div class="back-label">热线</div>
+          <div class="back-val">0510-82405444</div>
+        </div>
+        <div class="back-row">
+          <div class="back-icon">💬</div>
+          <div class="back-label">客服</div>
+          <div class="back-val">18012766661</div>
+        </div>
+        <div class="back-row">
+          <div class="back-icon">🌐</div>
+          <div class="back-label">官网</div>
+          <div class="back-val">gongfuzhixing.cn</div>
+        </div>
+      </div>
+      <div class="back-footer">如有遗失请联系前台归还，谢谢</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== 商家下单清单 ===== -->
+<div class="order-section">
+
+  <h2>淘宝下单规格清单</h2>
+  <p class="order-desc">将以下内容截图或复制，发给淘宝工作牌定制商家即可</p>
+
+  <table class="spec-table">
+    <tr><th colspan="2">工作牌规格要求</th></tr>
+    <tr><td>尺寸</td><td>标准横款 <strong>86mm × 54mm</strong>（名片大小）</td></tr>
+    <tr><td>材质</td><td>PVC硬卡 或 亚克力（两面印刷）<span class="tag">推荐PVC，耐用便宜</span></td></tr>
+    <tr><td>厚度</td><td>0.76mm 标准厚度</td></tr>
+    <tr><td>工艺</td><td>双面彩色印刷，正面含照片位，背面通用</td></tr>
+    <tr><td>配件</td><td>每张配1个横款胸卡夹（插胸口袋）或 带卡套+挂绳</td></tr>
+    <tr><td>数量</td><td>按人数定制，建议多做2-3张备用</td></tr>
+  </table>
+
+  <h2 style="margin-bottom:4px;margin-top:8px;">正面内容清单（逐人填写）</h2>
+  <p class="order-desc">以下为模板，实际使用时请补全每位员工的姓名、职务、校区、编号</p>
+
+  <table class="staff-table">
+    <tr>
+      <th>编号</th>
+      <th>姓名</th>
+      <th>职务/岗位</th>
+      <th>所在校区</th>
+      <th>备注</th>
+    </tr>
+    <tr><td>001</td><td>（填写）</td><td>校长</td><td>总部</td><td></td></tr>
+    <tr><td>002</td><td>于玺</td><td>前台/负责人</td><td>惠山区省锡中店</td><td></td></tr>
+    <tr><td>003</td><td>杜兴国</td><td>前台/负责人</td><td>惠山体育馆店</td><td></td></tr>
+    <tr><td>004</td><td>李华鹏</td><td>前台/负责人</td><td>锡山区天一体育馆店</td><td></td></tr>
+    <tr><td>005</td><td>（填写）</td><td>跆拳道教练</td><td>（填写）</td><td></td></tr>
+    <tr><td>006</td><td>（填写）</td><td>跆拳道教练</td><td>（填写）</td><td></td></tr>
+    <tr><td>007</td><td>（填写）</td><td>（填写）</td><td>（填写）</td><td></td></tr>
+    <tr><td>008</td><td>（填写）</td><td>（填写）</td><td>（填写）</td><td></td></tr>
+    <tr><td>009</td><td>（填写）</td><td>（填写）</td><td>（填写）</td><td></td></tr>
+    <tr><td>010</td><td>（填写）</td><td>（填写）</td><td>（填写）</td><td></td></tr>
+  </table>
+
+  <h2 style="margin-bottom:4px;margin-top:8px;">背面内容（所有人通用）</h2>
+  <p class="order-desc">背面统一印刷，无需逐人填写</p>
+
+  <table class="spec-table" style="margin-bottom:24px;">
+    <tr><th colspan="2">背面固定内容</th></tr>
+    <tr><td>机构名称</td><td>功夫之星武道馆</td></tr>
+    <tr><td>咨询热线</td><td>0510-82405444</td></tr>
+    <tr><td>客服微信</td><td>18012766661</td></tr>
+    <tr><td>官网</td><td>gongfuzhixing.cn</td></tr>
+    <tr><td>提示语</td><td>如有遗失请联系前台归还，谢谢</td></tr>
+    <tr><td>配色</td><td>主色 深红 #8B0000，辅色 金黄 #FFD700，底色白色</td></tr>
+  </table>
+
+  <div class="tip-box">
+    <strong>淘宝搜索关键词建议：</strong>工作牌定制 胸牌定制 PVC工作证 员工胸卡定制<br>
+    <strong>下单时告诉商家：</strong>双面彩印、86×54mm、含照片位、深红金色配色、配胸夹<br>
+    <strong>提供给商家的文件：</strong>把此页截图 + 全员通讯录Excel 一起发给商家即可<br>
+    <strong>参考价格：</strong>PVC工作牌定制约 3-8元/张，含挂绳套装约 5-12元/张
+  </div>
+
+</div>
+
+</body>
+</html>

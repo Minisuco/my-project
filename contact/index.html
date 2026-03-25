@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>功夫之星武道馆 - 全员通讯录</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 10px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            padding: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #667eea;
+            font-size: 1.8em;
+            margin-bottom: 5px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .update-time {
+            text-align: center;
+            color: #666;
+            font-size: 0.85em;
+            margin-bottom: 15px;
+        }
+        
+        .filter-section {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .filter-section label {
+            font-weight: bold;
+            color: #667eea;
+            margin-right: 5px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .filter-section select {
+            padding: 8px 15px;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            font-size: 1em;
+            background: white;
+            color: #333;
+            cursor: pointer;
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .filter-section select:focus {
+            outline: none;
+            border-color: #764ba2;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+        
+        h2 {
+            color: #764ba2;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 8px;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            display: table;
+        }
+        
+        thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        th {
+            padding: 12px 8px;
+            text-align: left;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        
+        td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #eee;
+            font-size: 0.9em;
+        }
+        
+        tbody tr:hover {
+            background-color: #f5f5f5;
+            transition: background-color 0.3s;
+        }
+        
+        tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .contact-table td a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .contact-table td a:hover {
+            text-decoration: underline;
+        }
+        
+        .summary {
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-size: 1em;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 30px;
+            color: #999;
+            font-size: 1.1em;
+            display: none;
+        }
+        
+        /* 手机端卡片样式 */
+        @media (max-width: 768px) {
+            body {
+                padding: 5px;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.5em;
+            }
+            
+            .filter-section {
+                flex-direction: column;
+            }
+            
+            .filter-section label {
+                margin-right: 0;
+                margin-bottom: 5px;
+            }
+            
+            .filter-section select {
+                width: 100%;
+                min-width: auto;
+            }
+            
+            table {
+                display: none;
+            }
+            
+            .school-section {
+                display: block;
+            }
+            
+            .person-card {
+                background: white;
+                border: 1px solid #e0e0e0;
+                border-radius: 10px;
+                padding: 15px;
+                margin-bottom: 10px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            
+            .person-card:hover {
+                box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+                transform: translateY(-2px);
+                transition: all 0.3s;
+            }
+            
+            .person-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 10px;
+            }
+            
+            .person-name {
+                font-size: 1.1em;
+                font-weight: bold;
+                color: #667eea;
+            }
+            
+            .person-position {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 3px 10px;
+                border-radius: 15px;
+                font-size: 0.8em;
+            }
+            
+            .person-info {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 8px;
+                font-size: 0.9em;
+            }
+            
+            .info-row {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+            
+            .info-label {
+                color: #999;
+                font-weight: bold;
+                min-width: 60px;
+            }
+            
+            .info-value {
+                flex: 1;
+            }
+            
+            .phone-link {
+                color: #667eea;
+                text-decoration: none;
+                font-weight: 500;
+            }
+            
+            .phone-link:active {
+                opacity: 0.7;
+            }
+            
+            h2 {
+                font-size: 1.2em;
+                margin-top: 20px;
+            }
+            
+            .summary {
+                font-size: 0.95em;
+                padding: 12px;
+            }
+        }
+        
+        @media (min-width: 769px) {
+            .school-section {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🥋 功夫之星武道馆通讯录</h1>
+        <p class="update-time" id="updateTime">最后更新：加载中...</p>
+        
+        <div class="filter-section">
+            <label for="schoolFilter">🏢 校区：</label>
+            <select id="schoolFilter" onchange="filterBySchool()">
+                <option value="all">全部校区</option>
+                <option value="sx">惠山区省锡中店</option>
+                <option value="hs">惠山体育馆店</option>
+                <option value="xt">锡山区天一体育馆店</option>
+                <option value="hq">总部</option>
+            </select>
+            
+            <label for="positionFilter">💼 职务：</label>
+            <select id="positionFilter" onchange="filterByPosition()">
+                <option value="all">全部职务</option>
+                <option value="校长">校长</option>
+                <option value="副校长">副校长</option>
+                <option value="教学主管">教学主管</option>
+                <option value="人事财务主管">人事财务主管</option>
+                <option value="教练">教练</option>
+                <option value="示范团团长">示范团团长</option>
+            </select>
+        </div>
+        
+        <div id="noResults" class="no-results">没有找到匹配的联系人</div>
+        
+        <!-- 表格视图（电脑端） -->
+        <div id="tableView">
+            <h2 id="sx-title">📍 惠山区省锡中店</h2>
+            <table id="sx-table">
+                <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>姓名</th>
+                        <th>工作手机</th>
+                        <th>私人手机</th>
+                        <th>职务</th>
+                        <th>入职时间</th>
+                        <th>短号</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>于玺</td><td>17312793472</td><td>13338770160</td><td>校长</td><td>2017</td><td>603</td></tr>
+                    <tr><td>2</td><td>代梦瑞</td><td>1811570931</td><td>17702545722</td><td>教学主管</td><td>44470</td><td>607</td></tr>
+                    <tr><td>3</td><td>王慈官</td><td>18115772053</td><td>18265090415</td><td>示范团团长</td><td>44256</td><td>606</td></tr>
+                    <tr><td>4</td><td>程瑞胜</td><td>18012399159</td><td>17806118936</td><td>搏击教练</td><td>2023-10-10</td><td>无</td></tr>
+                    <tr><td>5</td><td>慕冬艳</td><td>18068374379</td><td>15097270807</td><td>体适能教练</td><td>2025-08-01</td><td>无</td></tr>
+                    <tr><td>6</td><td>李嘉炜</td><td>15370239109</td><td>18751567001</td><td>初级教练</td><td>2026.2</td><td>602</td></tr>
+                    <tr><td>7</td><td>杜超</td><td>-</td><td>17351512128</td><td>搏击高级教练</td><td>-</td><td>无</td></tr>
+                </tbody>
+            </table>
+            
+            <h2 id="hs-title">📍 惠山体育馆店</h2>
+            <table id="hs-table">
+                <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>姓名</th>
+                        <th>工作手机</th>
+                        <th>私人手机</th>
+                        <th>职务</th>
+                        <th>入职时间</th>
+                        <th>短号</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>杜兴国</td><td>17351489679</td><td>18803745291</td><td>校长</td><td>2019.1</td><td>604</td></tr>
+                    <tr><td>2</td><td>程龙</td><td>18115773507</td><td>18012766661</td><td>人事财务主管</td><td>-</td><td>666</td></tr>
+                    <tr><td>3</td><td>徐梦丽</td><td>18068271830</td><td>15061752503</td><td>副校长</td><td>2024.6.3</td><td>612</td></tr>
+                    <tr><td>4</td><td>刘博</td><td>17715698701</td><td>18342857205</td><td>教学主管</td><td>2023.4</td><td>611</td></tr>
+                    <tr><td>5</td><td>张翠波</td><td>-</td><td>18860903817</td><td>武术高级教练</td><td>-</td><td>-</td></tr>
+                </tbody>
+            </table>
+            
+            <h2 id="xt-title">📍 锡山区天一体育馆店</h2>
+            <table id="xt-table">
+                <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>姓名</th>
+                        <th>工作手机</th>
+                        <th>私人手机</th>
+                        <th>职务</th>
+                        <th>入职时间</th>
+                        <th>短号</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>李华鹏</td><td>18014189679</td><td>18018319433</td><td>副校长</td><td>2021-01-16</td><td>605</td></tr>
+                    <tr><td>2</td><td>邹思理</td><td>18115771657</td><td>15651513399</td><td>教学主管</td><td>2024-09-16</td><td>886</td></tr>
+                </tbody>
+            </table>
+            
+            <h2 id="hq-title">📞 总部联系方式</h2>
+            <table id="hq-table" class="contact-table">
+                <thead>
+                    <tr>
+                        <th>项目</th>
+                        <th>联系方式</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>客服电话</td><td><a href="tel:18012766661">18012766661</a></td></tr>
+                    <tr><td>微信号</td><td>39392376</td></tr>
+                    <tr><td>咨询热线</td><td><a href="tel:0510-82405444">0510-82405444</a></td></tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- 卡片视图（手机端） -->
+        <div id="cardView" class="school-section">
+            <h2 id="sx-card-title">📍 惠山区省锡中店</h2>
+            <div id="sx-cards">
+                <!-- 卡片将通过JS生成 -->
+            </div>
+            
+            <h2 id="hs-card-title">📍 惠山体育馆店</h2>
+            <div id="hs-cards">
+                <!-- 卡片将通过JS生成 -->
+            </div>
+            
+            <h2 id="xt-card-title">📍 锡山区天一体育馆店</h2>
+            <div id="xt-cards">
+                <!-- 卡片将通过JS生成 -->
+            </div>
+            
+            <h2 id="hq-card-title">📞 总部联系方式</h2>
+            <div id="hq-cards">
+                <!-- 卡片将通过JS生成 -->
+            </div>
+        </div>
+        
+        <div class="summary">
+            📊 统计：3个校区，14名员工
+        </div>
+    </div>
+    
+    <script>
+        // 设置更新时间
+        document.getElementById('updateTime').textContent = '最后更新：' + new Date().toLocaleString('zh-CN');
+        
+        // 人员数据
+        const staffData = {
+            sx: [
+                {name: '于玺', work: '17312793472', private: '13338770160', position: '校长', date: '2017', short: '603'},
+                {name: '代梦瑞', work: '1811570931', private: '17702545722', position: '教学主管', date: '44470', short: '607'},
+                {name: '王慈官', work: '18115772053', private: '18265090415', position: '示范团团长', date: '44256', short: '606'},
+                {name: '程瑞胜', work: '18012399159', private: '17806118936', position: '搏击教练', date: '2023-10-10', short: '无'},
+                {name: '慕冬艳', work: '18068374379', private: '15097270807', position: '体适能教练', date: '2025-08-01', short: '无'},
+                {name: '李嘉炜', work: '15370239109', private: '18751567001', position: '初级教练', date: '2026.2', short: '602'},
+                {name: '杜超', work: '-', private: '17351512128', position: '搏击高级教练', date: '-', short: '无'}
+            ],
+            hs: [
+                {name: '杜兴国', work: '17351489679', private: '18803745291', position: '校长', date: '2019.1', short: '604'},
+                {name: '程龙', work: '18115773507', private: '18012766661', position: '人事财务主管', date: '-', short: '666'},
+                {name: '徐梦丽', work: '18068271830', private: '15061752503', position: '副校长', date: '2024.6.3', short: '612'},
+                {name: '刘博', work: '17715698701', private: '18342857205', position: '教学主管', date: '2023.4', short: '611'},
+                {name: '张翠波', work: '-', private: '18860903817', position: '武术高级教练', date: '-', short: '-'}
+            ],
+            xt: [
+                {name: '李华鹏', work: '18014189679', private: '18018319433', position: '副校长', date: '2021-01-16', short: '605'},
+                {name: '邹思理', work: '18115771657', private: '15651513399', position: '教学主管', date: '2024-09-16', short: '886'}
+            ],
+            hq: [
+                {name: '客服', work: '-', private: '18012766661', position: '客服', date: '-', short: '-'},
+                {name: '咨询热线', work: '-', private: '0510-82405444', position: '咨询热线', date: '-', short: '-'}
+            ]
+        };
+        
+        // 生成手机端卡片
+        function generateCards(schoolId) {
+            const cardsContainer = document.getElementById(schoolId + '-cards');
+            cardsContainer.innerHTML = '';
+            
+            staffData[schoolId].forEach(person => {
+                const card = document.createElement('div');
+                card.className = 'person-card';
+                card.innerHTML = `
+                    <div class="person-header">
+                        <span class="person-name">${person.name}</span>
+                        <span class="person-position">${person.position}</span>
+                    </div>
+                    <div class="person-info">
+                        ${person.work !== '-' ? `
+                        <div class="info-row">
+                            <span class="info-label">工作：</span>
+                            <a href="tel:${person.work}" class="phone-link">${person.work}</a>
+                        </div>` : ''}
+                        <div class="info-row">
+                            <span class="info-label">私人：</span>
+                            <a href="tel:${person.private}" class="phone-link">${person.private}</a>
+                        </div>
+                        ${person.short && person.short !== '-' && person.short !== '无' ? `
+                        <div class="info-row">
+                            <span class="info-label">短号：</span>
+                            <span class="info-value">${person.short}</span>
+                        </div>` : ''}
+                    </div>
+                `;
+                cardsContainer.appendChild(card);
+            });
+        }
+        
+        // 生成所有卡片
+        generateCards('sx');
+        generateCards('hs');
+        generateCards('xt');
+        generateCards('hq');
+        
+        // 校区筛选
+        function filterBySchool() {
+            const schoolFilter = document.getElementById('schoolFilter').value;
+            const positionFilter = document.getElementById('positionFilter').value;
+            
+            const elements = ['sx', 'hs', 'xt', 'hq'];
+            let hasVisible = false;
+            
+            elements.forEach(schoolId => {
+                const title = document.getElementById(schoolId + (schoolId === 'hq' ? '-title' : (window.innerWidth <= 768 ? '-card-title' : '-title')));
+                const table = document.getElementById(schoolId + '-table');
+                const cardsContainer = document.getElementById(schoolId + '-cards');
+                const cardTitle = document.getElementById(schoolId + '-card-title');
+                
+                let shouldShow = false;
+                
+                if (schoolFilter === 'all' || schoolFilter === schoolId) {
+                    shouldShow = true;
+                }
+                
+                if (shouldShow && positionFilter !== 'all') {
+                    // 进一步按职务筛选
+                    const staff = staffData[schoolId];
+                    const hasMatch = staff.some(person => 
+                        positionFilter === '教练' ? 
+                        person.position.includes('教练') : 
+                        person.position === positionFilter
+                    );
+                    
+                    if (!hasMatch) {
+                        shouldShow = false;
+                    } else if (window.innerWidth > 768 && table) {
+                        // 表格视图筛选行
+                        const rows = table.querySelectorAll('tbody tr');
+                        rows.forEach(row => {
+                            const positionCell = row.cells[4].textContent;
+                            const isCoach = positionCell.includes('教练');
+                            const showRow = positionFilter === '教练' ? isCoach : positionCell === positionFilter;
+                            row.style.display = showRow ? '' : 'none';
+                        });
+                    } else if (window.innerWidth <= 768 && cardsContainer) {
+                        // 卡片视图筛选
+                        const cards = cardsContainer.querySelectorAll('.person-card');
+                        const staff = staffData[schoolId];
+                        cards.forEach((card, index) => {
+                            const isCoach = staff[index].position.includes('教练');
+                            const showCard = positionFilter === '教练' ? isCoach : staff[index].position === positionFilter;
+                            card.style.display = showCard ? '' : 'none';
+                        });
+                    }
+                } else if (shouldShow && window.innerWidth > 768 && table) {
+                    // 重置表格行显示
+                    const rows = table.querySelectorAll('tbody tr');
+                    rows.forEach(row => row.style.display = '');
+                } else if (shouldShow && window.innerWidth <= 768 && cardsContainer) {
+                    // 重置卡片显示
+                    const cards = cardsContainer.querySelectorAll('.person-card');
+                    cards.forEach(card => card.style.display = '');
+                }
+                
+                // 显示/隐藏标题和表格
+                if (title) title.style.display = shouldShow ? '' : 'none';
+                if (cardTitle) cardTitle.style.display = shouldShow ? '' : 'none';
+                if (table) table.style.display = shouldShow ? '' : 'none';
+                if (cardsContainer) cardsContainer.style.display = shouldShow ? '' : 'none';
+                
+                if (shouldShow) hasVisible = true;
+            });
+            
+            // 显示/隐藏无结果提示
+            document.getElementById('noResults').style.display = hasVisible ? 'none' : 'block';
+        }
+        
+        // 职务筛选
+        function filterByPosition() {
+            filterBySchool();
+        }
+    </script>
+</body>
+</html>

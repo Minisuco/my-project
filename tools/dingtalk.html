@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>功夫之星武道馆 · 钉钉配置使用指南</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #f4f5f7;
+    font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+    color: #333;
+  }
+
+  /* 顶部封面 */
+  .cover {
+    background: linear-gradient(135deg, #6b0000 0%, #8B0000 60%, #b71c1c 100%);
+    padding: 48px 40px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::after {
+    content: '钉钉';
+    position: absolute;
+    right: 40px; top: 20px;
+    font-size: 120px;
+    font-weight: 900;
+    color: rgba(255,255,255,0.05);
+    letter-spacing: -4px;
+  }
+  .cover-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,215,0,0.15);
+    border: 1px solid rgba(255,215,0,0.4);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 11px;
+    color: #FFD700;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+  }
+  .cover h1 {
+    font-size: 28px;
+    font-weight: 900;
+    color: white;
+    line-height: 1.3;
+    margin-bottom: 10px;
+  }
+  .cover h1 span { color: #FFD700; }
+  .cover p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.8;
+  }
+  .cover-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 20px;
+  }
+  .cover-tag {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.7);
+    font-size: 11px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+  }
+
+  /* 主体 */
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 36px 24px 60px;
+  }
+
+  /* 目录 */
+  .toc {
+    background: white;
+    border-radius: 14px;
+    padding: 24px 28px;
+    margin-bottom: 32px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .toc h2 {
+    font-size: 14px;
+    color: #8B0000;
+    margin-bottom: 14px;
+    letter-spacing: 1px;
+  }
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .toc-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    background: #fafafa;
+    border: 1px solid #f0f0f0;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+  .toc-item:hover { background: #fff3e0; border-color: #ffcc80; }
+  .toc-num {
+    width: 22px; height: 22px;
+    background: #8B0000;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; color: white; font-weight: 700; flex-shrink: 0;
+  }
+  .toc-text { font-size: 12px; color: #444; font-weight: 500; }
+
+  /* 章节卡片 */
+  .section {
+    background: white;
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .section-header {
+    background: linear-gradient(90deg, #8B0000, #a00000);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-num {
+    width: 30px; height: 30px;
+    background: rgba(255,215,0,0.2);
+    border: 1.5px solid rgba(255,215,0,0.5);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 800; color: #FFD700;
+    flex-shrink: 0;
+  }
+  .section-title { font-size: 16px; font-weight: 700; color: white; }
+  .section-subtitle { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 1px; }
+  .section-icon { font-size: 22px; margin-left: auto; }
+  .section-body { padding: 24px; }
+
+  /* 步骤 */
+  .steps { display: flex; flex-direction: column; gap: 14px; }
+  .step {
+    display: flex;
+    gap: 14px;
+    padding: 14px 16px;
+    background: #fafafa;
+    border-radius: 10px;
+    border-left: 3px solid #8B0000;
+  }
+  .step-num {
+    width: 24px; height: 24px;
+    background: #8B0000;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; color: white;
+    flex-shrink: 0; margin-top: 1px;
+  }
+  .step-content { flex: 1; }
+  .step-title { font-size: 13px; font-weight: 700; color: #222; margin-bottom: 4px; }
+  .step-desc { font-size: 12px; color: #666; line-height: 1.8; }
+  .step-desc b { color: #8B0000; }
+
+  /* 设置项列表 */
+  .config-list { display: flex; flex-direction: column; gap: 10px; }
+  .config-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 14px;
+    border: 1px solid #f0f0f0;
+    border-radius: 8px;
+  }
+  .config-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .config-title { font-size: 13px; font-weight: 600; color: #222; margin-bottom: 3px; }
+  .config-desc { font-size: 12px; color: #777; line-height: 1.7; }
+  .config-desc b { color: #8B0000; }
+
+  /* 标签 */
+  .tag { display: inline-block; font-size: 10px; padding: 1px 7px; border-radius: 3px; margin-left: 6px; vertical-align: middle; }
+  .tag-red { background: #fdecea; color: #c62828; border: 1px solid #ef9a9a; }
+  .tag-gold { background: #fff8e1; color: #e65100; border: 1px solid #ffe082; }
+  .tag-green { background: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7; }
+  .tag-blue { background: #e3f2fd; color: #1565c0; border: 1px solid #90caf9; }
+
+  /* 表格 */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin-top: 10px;
+  }
+  .data-table th {
+    background: #8B0000;
+    color: white;
+    padding: 9px 12px;
+    text-align: left;
+    font-weight: 600;
+  }
+  .data-table td {
+    padding: 9px 12px;
+    border-bottom: 1px solid #f0f0f0;
+    color: #444;
+    line-height: 1.7;
+  }
+  .data-table tr:nth-child(even) td { background: #fafafa; }
+
+  /* 提示框 */
+  .tip {
+    background: #fff8e1;
+    border: 1px solid #ffe082;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 12px;
+    color: #5d4037;
+    line-height: 1.8;
+    margin-top: 14px;
+  }
+  .tip b { color: #8B0000; }
+
+  /* 分隔 */
+  .divider { height: 1px; background: #f0f0f0; margin: 16px 0; }
+
+  /* 组织架构图 */
+  .org-chart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    padding: 10px 0;
+  }
+  .org-node {
+    background: #8B0000;
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 8px 20px;
+    border-radius: 6px;
+    letter-spacing: 1px;
+  }
+  .org-node.branch {
+    background: #b71c1c;
+    font-size: 11px;
+    padding: 6px 16px;
+  }
+  .org-node.staff {
+    background: white;
+    color: #8B0000;
+    border: 1.5px solid #8B0000;
+    font-size: 11px;
+    padding: 5px 14px;
+    font-weight: 500;
+  }
+  .org-line {
+    width: 2px; height: 18px;
+    background: #ddd;
+  }
+  .org-row {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    justify-content: center;
+  }
+  .org-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  @media print {
+    body { background: white; }
+    .section { box-shadow: none; break-inside: avoid; }
+    .cover::after { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 封面 -->
+<div class="cover">
+  <div class="cover-badge">✦ 内部使用文件</div>
+  <h1>功夫之星武道馆<br><span>钉钉配置使用指南</span></h1>
+  <p>适用于跆拳道 / 武术培训机构 · 三校区统一管理<br>涵盖组织架构、考勤、审批、日志、任务、群管理全模块</p>
+  <div class="cover-tags">
+    <span class="cover-tag">组织架构</span>
+    <span class="cover-tag">考勤打卡</span>
+    <span class="cover-tag">审批流程</span>
+    <span class="cover-tag">日志汇报</span>
+    <span class="cover-tag">任务管理</span>
+    <span class="cover-tag">群公告</span>
+    <span class="cover-tag">薪酬绩效</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 目录 -->
+  <div class="toc">
+    <h2>目录</h2>
+    <div class="toc-grid">
+      <a class="toc-item" href="#s1"><div class="toc-num">1</div><div class="toc-text">组织架构搭建</div></a>
+      <a class="toc-item" href="#s2"><div class="toc-num">2</div><div class="toc-text">考勤打卡设置</div></a>
+      <a class="toc-item" href="#s3"><div class="toc-num">3</div><div class="toc-text">审批流程配置</div></a>
+      <a class="toc-item" href="#s4"><div class="toc-num">4</div><div class="toc-text">日志汇报管理</div></a>
+      <a class="toc-item" href="#s5"><div class="toc-num">5</div><div class="toc-text">任务与待办</div></a>
+      <a class="toc-item" href="#s6"><div class="toc-num">6</div><div class="toc-text">群组规范管理</div></a>
+    </div>
+  </div>
+
+  <!-- 1. 组织架构 -->
+  <div class="section" id="s1">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <div>
+        <div class="section-title">组织架构搭建</div>
+        <div class="section-subtitle">按校区建立部门，权限清晰，管理高效</div>
+      </div>
+      <div class="section-icon">🏢</div>
+    </div>
+    <div class="section-body">
+
+      <!-- 架构图 -->
+      <div class="org-chart">
+        <div class="org-node">功夫之星武道馆（总部）</div>
+        <div class="org-line"></div>
+        <div class="org-row">
+          <div class="org-col">
+            <div class="org-node branch">惠山区省锡中店</div>
+            <div class="org-line"></div>
+            <div class="org-row">
+              <div class="org-node staff">负责人·于玺</div>
+              <div class="org-node staff">教练</div>
+              <div class="org-node staff">前台</div>
+            </div>
+          </div>
+          <div class="org-col" style="margin:0 16px">
+            <div class="org-node branch">惠山体育馆店</div>
+            <div class="org-line"></div>
+            <div class="org-row">
+              <div class="org-node staff">负责人·杜兴国</div>
+              <div class="org-node staff">教练</div>
+              <div class="org-node staff">前台</div>
+            </div>
+          </div>
+          <div class="org-col">
+            <div class="org-node branch">锡山区天一体育馆店</div>
+            <div class="org-line"></div>
+            <div class="org-row">
+              <div class="org-node staff">负责人·李华鹏</div>
+              <div class="org-node staff">教练</div>
+              <div class="org-node staff">前台</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <div class="step-title">创建企业组织</div>
+            <div class="step-desc">钉钉首页 → <b>工作台</b> → <b>通讯录</b> → 创建企业，填写"功夫之星武道馆"，上传营业执照完成认证</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <div class="step-title">建立部门层级</div>
+            <div class="step-desc">管理后台 → <b>组织管理 → 部门管理</b> → 新建三个子部门：<b>省锡中店 / 惠山体育馆店 / 锡山天一店</b>，各自设置负责人</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <div class="step-title">添加员工并分配部门</div>
+            <div class="step-desc">通过手机号邀请员工加入，填写<b>姓名、岗位、所属部门</b>。建议同时填写工号，方便后续考勤和薪酬对应</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <div class="step-title">设置管理员权限</div>
+            <div class="step-desc">校长为<b>超级管理员</b>，各校区负责人设为<b>子管理员</b>（只能管理本校区数据），教练/前台为普通成员</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. 考勤打卡 -->
+  <div class="section" id="s2">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <div>
+        <div class="section-title">考勤打卡设置</div>
+        <div class="section-subtitle">按校区分组设置上下班时间，支持GPS定位打卡</div>
+      </div>
+      <div class="section-icon">⏰</div>
+    </div>
+    <div class="section-body">
+      <div class="config-list">
+        <div class="config-item">
+          <div class="config-icon">📍</div>
+          <div>
+            <div class="config-title">GPS定位打卡 <span class="tag tag-red">推荐</span></div>
+            <div class="config-desc">后台 → <b>考勤打卡 → 考勤组管理</b> → 新建考勤组 → 打卡方式选<b>"地点打卡"</b> → 输入各校区地址，设置打卡范围<b>200米</b>以内有效<br>优点：防止代打卡，教练在校区外无法打卡</div>
+          </div>
+        </div>
+        <div class="config-item">
+          <div class="config-icon">🕐</div>
+          <div>
+            <div class="config-title">上下班时间设置</div>
+            <div class="config-desc">
+              建议按以下时间段配置（可根据实际调整）：<br>
+              · <b>工作日班</b>：上午 09:00 上班，21:00 下班<br>
+              · <b>周末班</b>：09:00 上班，18:00 下班<br>
+              · 允许<b>弹性打卡30分钟</b>，迟到超30分钟记异常
+            </div>
+          </div>
+        </div>
+        <div class="config-item">
+          <div class="config-icon">👥</div>
+          <div>
+            <div class="config-title">按校区分组设置</div>
+            <div class="config-desc">每个校区建立<b>独立考勤组</b>，负责人可单独查看本校区打卡数据，校长可查看全部<br>各校区地址：<b>省锡中店 / 惠山体育馆 / 天一体育馆</b></div>
+          </div>
+        </div>
+        <div class="config-item">
+          <div class="config-icon">📊</div>
+          <div>
+            <div class="config-title">考勤报表导出</div>
+            <div class="config-desc">每月1号自动生成上月考勤汇总，<b>导出Excel</b>用于核算工资，路径：考勤 → 统计报表 → 月度报表</div>
+          </div>
+        </div>
+      </div>
+
+      <table class="data-table">
+        <tr><th>岗位</th><th>建议考勤组</th><th>打卡要求</th></tr>
+        <tr><td>教练</td><td>各自所在校区组</td><td>上课前15分钟打卡，下课后打卡</td></tr>
+        <tr><td>前台</td><td>各自所在校区组</td><td>正常上下班时间打卡</td></tr>
+        <tr><td>校长</td><td>总部管理组（不限位置）</td><td>外勤打卡即可</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 3. 审批流程 -->
+  <div class="section" id="s3">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <div>
+        <div class="section-title">审批流程配置</div>
+        <div class="section-subtitle">请假、报销、采购等一键线上审批，留有记录</div>
+      </div>
+      <div class="section-icon">✅</div>
+    </div>
+    <div class="section-body">
+      <table class="data-table">
+        <tr><th>审批类型</th><th>适用场景</th><th>审批流程</th><th>建议</th></tr>
+        <tr>
+          <td><b>请假申请</b></td>
+          <td>教练/前台请假</td>
+          <td>本人申请 → 校区负责人审批 → 校长知会</td>
+          <td>设置最少提前<b>1天</b>申请</td>
+        </tr>
+        <tr>
+          <td><b>外出申请</b></td>
+          <td>比赛带队、外出拜访</td>
+          <td>本人申请 → 校长审批</td>
+          <td>填写外出事由和预计返回时间</td>
+        </tr>
+        <tr>
+          <td><b>费用报销</b></td>
+          <td>采购耗材、比赛费用</td>
+          <td>本人申请（附发票照片）→ 校长审批</td>
+          <td>50元以下负责人可直接批</td>
+        </tr>
+        <tr>
+          <td><b>物品采购</b></td>
+          <td>道服、护具、耗材</td>
+          <td>校区负责人申请 → 校长审批</td>
+          <td>备注用途和数量</td>
+        </tr>
+        <tr>
+          <td><b>调班申请</b></td>
+          <td>教练换课</td>
+          <td>本人申请 → 负责人审批</td>
+          <td>注明换课原因和换班人员</td>
+        </tr>
+      </table>
+
+      <div class="tip">
+        <b>配置路径：</b>管理后台 → 工作台 → 审批 → 创建审批模板 → 选择对应类型并配置审批人层级<br>
+        <b>小技巧：</b>开启"审批超时自动提醒"，校长24小时未处理自动提醒，避免卡单
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. 日志汇报 -->
+  <div class="section" id="s4">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <div>
+        <div class="section-title">日志 / 周报汇报</div>
+        <div class="section-subtitle">教练每日上报带课情况，负责人周报总结校区数据</div>
+      </div>
+      <div class="section-icon">📝</div>
+    </div>
+    <div class="section-body">
+      <div class="config-list">
+        <div class="config-item">
+          <div class="config-icon">📋</div>
+          <div>
+            <div class="config-title">教练日志模板（每日下课后填写）</div>
+            <div class="config-desc">
+              · 今日带课班级：<b>__班 共__人</b><br>
+              · 课程内容简述：<b>（简单写本节课教学重点）</b><br>
+              · 学员出勤异常：<b>（缺课学员姓名）</b><br>
+              · 家长沟通记录：<b>（沟通了哪位家长，内容）</b><br>
+              · 明日带课计划：<b>（明天几点什么班）</b>
+            </div>
+          </div>
+        </div>
+        <div class="config-item">
+          <div class="config-icon">📊</div>
+          <div>
+            <div class="config-title">校区负责人周报模板（每周一填写上周数据）</div>
+            <div class="config-desc">
+              · 本周课时完成情况：<b>计划__节 / 实际完成__节</b><br>
+              · 本周新增学员：<b>__人</b><br>
+              · 本周续费学员：<b>__人 / 金额__元</b><br>
+              · 本周退费情况：<b>__人 / 原因</b><br>
+              · 下周重点工作计划：<b>（列1-3条）</b>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tip">
+        <b>设置路径：</b>工作台 → 日志 → 新建日志模板 → 按上方字段配置问题项，设置<b>每日/每周提醒</b><br>
+        <b>汇报对象：</b>教练日志汇报给校区负责人；负责人周报汇报给校长<br>
+        <b>建议规则：</b>每日21:30前提交日志，超时未交由负责人催促
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. 任务管理 -->
+  <div class="section" id="s5">
+    <div class="section-header">
+      <div class="section-num">5</div>
+      <div>
+        <div class="section-title">任务与待办管理</div>
+        <div class="section-subtitle">重要事项派发任务，有截止时间，有责任人</div>
+      </div>
+      <div class="section-icon">✔️</div>
+    </div>
+    <div class="section-body">
+      <div class="config-list">
+        <div class="config-item">
+          <div class="config-icon">🎯</div>
+          <div>
+            <div class="config-title">任务派发规范</div>
+            <div class="config-desc">
+              发任务时必填三要素：<b>任务名称 + 截止时间 + 负责人</b><br>
+              路径：钉钉首页 → 待办 → 新建任务 → 指定执行人<br>
+              执行人完成后标记"已完成"，校长可看到完成状态
+            </div>
+          </div>
+        </div>
+        <div class="config-item">
+          <div class="config-icon">📌</div>
+          <div>
+            <div class="config-title">适合用任务管理的场景 <span class="tag tag-gold">武道馆专用</span></div>
+            <div class="config-desc">
+              · 考级通知发布（截止：考级前5天）<br>
+              · 赛事报名收集（截止：报名截止日前1天）<br>
+              · 道服/护具采购（截止：下次上课前）<br>
+              · 月度绩效数据汇总（截止：每月5号）<br>
+              · 新学员入档建档（截止：入学当日）
+            </div>
+          </div>
+        </div>
+        <div class="config-item">
+          <div class="config-icon">⏰</div>
+          <div>
+            <div class="config-title">超时提醒设置</div>
+            <div class="config-desc">创建任务时开启<b>"到期提醒"</b>，截止前1天自动提醒负责人，确保不遗漏</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. 群组管理 -->
+  <div class="section" id="s6">
+    <div class="section-header">
+      <div class="section-num">6</div>
+      <div>
+        <div class="section-title">群组规范管理</div>
+        <div class="section-subtitle">建议建立标准群组体系，信息分流，不混乱</div>
+      </div>
+      <div class="section-icon">💬</div>
+    </div>
+    <div class="section-body">
+      <table class="data-table">
+        <tr><th>群名称</th><th>成员</th><th>用途</th><th>群规则</th></tr>
+        <tr>
+          <td><b>功夫之星 · 管理层</b></td>
+          <td>校长 + 三校区负责人</td>
+          <td>重要决策、数据汇报、紧急通知</td>
+          <td>仅限管理层，24小时必回</td>
+        </tr>
+        <tr>
+          <td><b>省锡中店 · 全体</b></td>
+          <td>该校区全员</td>
+          <td>校区内部通知、排班、日常沟通</td>
+          <td>工作时间发言，禁止闲聊</td>
+        </tr>
+        <tr>
+          <td><b>惠山体育馆店 · 全体</b></td>
+          <td>该校区全员</td>
+          <td>同上</td>
+          <td>同上</td>
+        </tr>
+        <tr>
+          <td><b>天一体育馆店 · 全体</b></td>
+          <td>该校区全员</td>
+          <td>同上</td>
+          <td>同上</td>
+        </tr>
+        <tr>
+          <td><b>功夫之星 · 全员大群</b></td>
+          <td>所有员工</td>
+          <td>全公司通知、表彰、重大公告</td>
+          <td>仅管理员发言，其他人禁言</td>
+        </tr>
+        <tr>
+          <td><b>教练交流群</b></td>
+          <td>所有教练</td>
+          <td>教学经验分享、课程研讨</td>
+          <td>正能量，禁止抱怨</td>
+        </tr>
+      </table>
+
+      <div class="divider"></div>
+
+      <div class="config-list">
+        <div class="config-item">
+          <div class="config-icon">📢</div>
+          <div>
+            <div class="config-title">群公告使用规范</div>
+            <div class="config-desc">
+              重要通知必须用<b>群公告</b>（非普通消息），成员必须"已读确认"<br>
+              适合发群公告的内容：考级通知、比赛信息、放假安排、重要制度变更
+            </div>
+          </div>
+        </div>
+        <div class="config-item">
+          <div class="config-icon">🔕</div>
+          <div>
+            <div class="config-title">全员大群禁言设置</div>
+            <div class="config-desc">
+              路径：群设置 → 群管理 → <b>全员禁言</b> → 开启<br>
+              仅校长和管理员可发言，防止信息混乱，确保每条通知都被看到
+            </div>
+          </div>
+        </div>
+        <div class="config-item">
+          <div class="config-icon">📎</div>
+          <div>
+            <div class="config-title">群文件夹管理</div>
+            <div class="config-desc">
+              各群内建立<b>群文件夹</b>，统一存放：课表、考级资料、活动照片、通知模板<br>
+              路径：群 → 右上角 → 文件 → 新建文件夹分类存放
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /container -->
+</body>
+</html>

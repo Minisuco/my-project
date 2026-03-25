@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>功夫之星积分商城兑换规则</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #1a1a2e;
+    font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+  }
+  .poster {
+    width: 520px;
+    background: linear-gradient(160deg, #0d0d0d 0%, #1a0505 50%, #0d0d0d 100%);
+    border-radius: 24px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,215,0,0.2);
+  }
+
+  /* 顶部装饰光 */
+  .poster::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 300px; height: 2px;
+    background: linear-gradient(90deg, transparent, #ffd700, transparent);
+  }
+
+  /* Header */
+  .header {
+    padding: 32px 32px 24px;
+    text-align: center;
+    position: relative;
+  }
+  .header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,215,0,0.1);
+    border: 1px solid rgba(255,215,0,0.3);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 11px;
+    color: #ffd700;
+    letter-spacing: 2px;
+    margin-bottom: 14px;
+  }
+  .header-badge::before { content: '★'; }
+  .header-badge::after  { content: '★'; }
+  .title-main {
+    font-size: 32px;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: 2px;
+    text-shadow: 0 0 30px rgba(255,215,0,0.4);
+    line-height: 1.1;
+  }
+  .title-sub {
+    font-size: 13px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 4px;
+    margin-top: 6px;
+  }
+  .title-highlight {
+    color: #ffd700;
+  }
+
+  /* 积分获取方式 */
+  .section {
+    padding: 0 28px 24px;
+  }
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #ffd700;
+    letter-spacing: 2px;
+    font-weight: 700;
+    margin-bottom: 14px;
+  }
+  .section-title::before {
+    content: '';
+    width: 3px; height: 14px;
+    background: #ffd700;
+    border-radius: 2px;
+  }
+
+  .earn-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .earn-item {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 14px 10px;
+    text-align: center;
+  }
+  .earn-icon {
+    font-size: 22px;
+    margin-bottom: 6px;
+  }
+  .earn-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.5;
+    margin-bottom: 6px;
+  }
+  .earn-pts {
+    font-size: 16px;
+    font-weight: 800;
+    color: #ffd700;
+  }
+  .earn-pts span {
+    font-size: 10px;
+    font-weight: 400;
+    color: rgba(255,215,0,0.6);
+  }
+
+  /* 分隔线 */
+  .divider {
+    margin: 4px 28px 20px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,215,0,0.2), transparent);
+  }
+
+  /* 兑换层级 */
+  .tiers {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .tier {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 12px;
+    padding: 12px 16px;
+    transition: all 0.2s;
+  }
+  .tier.gold {
+    background: rgba(255,215,0,0.07);
+    border-color: rgba(255,215,0,0.25);
+  }
+  .tier-icon {
+    font-size: 26px;
+    flex-shrink: 0;
+    width: 40px;
+    text-align: center;
+  }
+  .tier-info { flex: 1; }
+  .tier-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 2px;
+  }
+  .tier-desc {
+    font-size: 11px;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.5;
+  }
+  .tier-pts {
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .tier-pts-num {
+    font-size: 20px;
+    font-weight: 900;
+    color: #ffd700;
+    line-height: 1;
+  }
+  .tier-pts-label {
+    font-size: 10px;
+    color: rgba(255,215,0,0.5);
+    margin-top: 2px;
+  }
+
+  /* 规则说明 */
+  .rules-box {
+    margin: 4px 28px 28px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 12px;
+    padding: 14px 16px;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .rules-title {
+    font-size: 11px;
+    color: rgba(255,215,0,0.7);
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .rules-list {
+    list-style: none;
+  }
+  .rules-list li {
+    font-size: 11px;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.8;
+    padding-left: 12px;
+    position: relative;
+  }
+  .rules-list li::before {
+    content: '·';
+    position: absolute;
+    left: 0;
+    color: #ffd700;
+  }
+
+  /* Footer */
+  .footer {
+    background: rgba(0,0,0,0.4);
+    padding: 14px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .footer-logo-icon {
+    width: 28px; height: 28px;
+    background: linear-gradient(135deg, #ffd700, #ff8c00);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 800; color: #1a0a00;
+  }
+  .footer-logo-text {
+    font-size: 13px; font-weight: 700; color: #ffd700;
+  }
+  .footer-logo-sub { font-size: 8px; color: rgba(255,255,255,0.3); letter-spacing: 1px; }
+  .footer-hotline { text-align: right; }
+  .footer-hotline-label { font-size: 9px; color: rgba(255,255,255,0.3); margin-bottom: 2px; }
+  .footer-hotline-num { font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.7); letter-spacing: 1px; }
+
+  @media print {
+    body { background: white; }
+    .poster { box-shadow: none; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+<div class="poster">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-badge">积分商城</div>
+    <div class="title-main">
+      用积分<br><span class="title-highlight">换好礼</span>
+    </div>
+    <div class="title-sub">POINTS MALL · EXCHANGE RULES</div>
+  </div>
+
+  <!-- 积分获取 -->
+  <div class="section">
+    <div class="section-title">如何获得积分</div>
+    <div class="earn-grid">
+      <div class="earn-item">
+        <div class="earn-icon">🥋</div>
+        <div class="earn-label">每次上课<br>打卡签到</div>
+        <div class="earn-pts">+1<span>分/次</span></div>
+      </div>
+      <div class="earn-item">
+        <div class="earn-icon">🏅</div>
+        <div class="earn-label">参加比赛<br>获奖</div>
+        <div class="earn-pts">+10<span>分起</span></div>
+      </div>
+      <div class="earn-item">
+        <div class="earn-icon">👥</div>
+        <div class="earn-label">推荐新学员<br>成功入学</div>
+        <div class="earn-pts">+50<span>分/人</span></div>
+      </div>
+      <div class="earn-item">
+        <div class="earn-icon">⭐</div>
+        <div class="earn-label">连续30次<br>满勤奖励</div>
+        <div class="earn-pts">+20<span>分</span></div>
+      </div>
+      <div class="earn-item">
+        <div class="earn-icon">🎂</div>
+        <div class="earn-label">生日当月<br>专属赠分</div>
+        <div class="earn-pts">+30<span>分</span></div>
+      </div>
+      <div class="earn-item">
+        <div class="earn-icon">📝</div>
+        <div class="earn-label">续费报班<br>当季课程</div>
+        <div class="earn-pts">+20<span>分</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 兑换好礼 -->
+  <div class="section">
+    <div class="section-title">积分兑换好礼</div>
+    <div class="tiers">
+      <div class="tier">
+        <div class="tier-icon">🥤</div>
+        <div class="tier-info">
+          <div class="tier-name">饮品零食</div>
+          <div class="tier-desc">饮料、小零食、文具等小礼品</div>
+        </div>
+        <div class="tier-pts">
+          <div class="tier-pts-num">30+</div>
+          <div class="tier-pts-label">积分起兑</div>
+        </div>
+      </div>
+      <div class="tier">
+        <div class="tier-icon">👕</div>
+        <div class="tier-info">
+          <div class="tier-name">功夫之星道服</div>
+          <div class="tier-desc">品牌T恤、训练服、腰带等</div>
+        </div>
+        <div class="tier-pts">
+          <div class="tier-pts-num">100+</div>
+          <div class="tier-pts-label">积分起兑</div>
+        </div>
+      </div>
+      <div class="tier">
+        <div class="tier-icon">🎒</div>
+        <div class="tier-info">
+          <div class="tier-name">运动装备</div>
+          <div class="tier-desc">护具、跆拳道包、运动水壶等</div>
+        </div>
+        <div class="tier-pts">
+          <div class="tier-pts-num">200+</div>
+          <div class="tier-pts-label">积分起兑</div>
+        </div>
+      </div>
+      <div class="tier gold">
+        <div class="tier-icon">🎓</div>
+        <div class="tier-info">
+          <div class="tier-name">免费课程券</div>
+          <div class="tier-desc">兑换单次课程或1个月课时券</div>
+        </div>
+        <div class="tier-pts">
+          <div class="tier-pts-num">500+</div>
+          <div class="tier-pts-label">积分起兑</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 规则说明 -->
+  <div class="rules-box">
+    <div class="rules-title">温馨提示</div>
+    <ul class="rules-list">
+      <li>积分有效期为当年12月31日，逾期清零，请及时使用</li>
+      <li>积分不可转让，仅限本人使用</li>
+      <li>兑换礼品数量有限，兑完为止</li>
+      <li>兑换请联系前台或扫码进入积分商城</li>
+    </ul>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-logo">
+      <div class="footer-logo-icon">功</div>
+      <div>
+        <div class="footer-logo-text">功夫之星武道馆</div>
+        <div class="footer-logo-sub">KUNGFU STAR MARTIAL ARTS</div>
+      </div>
+    </div>
+    <div class="footer-hotline">
+      <div class="footer-hotline-label">咨询热线</div>
+      <div class="footer-hotline-num">0510-82405444</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

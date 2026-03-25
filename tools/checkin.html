@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>功夫之星打卡签到卡</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #f0f0f0;
+    font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  h1 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 16px;
+  }
+  .print-hint {
+    background: #fff3cd;
+    border: 1px solid #ffc107;
+    padding: 10px 20px;
+    border-radius: 6px;
+    margin-bottom: 24px;
+    font-size: 13px;
+    color: #856404;
+  }
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    max-width: 900px;
+  }
+  .card {
+    width: 420px;
+    background: linear-gradient(135deg, #1a0a00 0%, #3d0f00 40%, #c0392b 100%);
+    border-radius: 16px;
+    padding: 20px 22px 18px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 140px; height: 140px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 50%;
+  }
+  .card::after {
+    content: '';
+    position: absolute;
+    bottom: -30px; left: -30px;
+    width: 100px; height: 100px;
+    background: rgba(255,200,0,0.08);
+    border-radius: 50%;
+  }
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .logo-icon {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, #ffd700, #ff8c00);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: #1a0a00;
+    flex-shrink: 0;
+  }
+  .logo-text {
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: #ffd700;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  }
+  .logo-sub {
+    font-size: 9px;
+    color: rgba(255,215,0,0.7);
+    letter-spacing: 2px;
+  }
+  .card-no {
+    font-size: 10px;
+    color: rgba(255,255,255,0.5);
+    text-align: right;
+  }
+  .student-info {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 14px;
+    background: rgba(0,0,0,0.25);
+    border-radius: 10px;
+    padding: 10px 12px;
+  }
+  .info-item {
+    flex: 1;
+  }
+  .info-label {
+    font-size: 9px;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 4px;
+    letter-spacing: 1px;
+  }
+  .info-value {
+    font-size: 13px;
+    color: white;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    padding-bottom: 2px;
+    min-width: 60px;
+    min-height: 18px;
+  }
+  .punch-title {
+    font-size: 11px;
+    color: rgba(255,215,0,0.8);
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .punch-title::before, .punch-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(255,215,0,0.3);
+  }
+  .punch-grid {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 5px;
+    margin-bottom: 12px;
+  }
+  .punch-cell {
+    aspect-ratio: 1;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px;
+    color: rgba(255,255,255,0.3);
+    font-weight: 500;
+  }
+  .punch-cell.special {
+    background: rgba(255,215,0,0.12);
+    border-color: rgba(255,215,0,0.4);
+    color: rgba(255,215,0,0.7);
+  }
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 10px;
+  }
+  .reward-info {
+    font-size: 9px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.6;
+  }
+  .reward-info span {
+    color: #ffd700;
+    font-weight: 600;
+  }
+  .qr-placeholder {
+    width: 44px; height: 44px;
+    background: rgba(255,255,255,0.9);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 7px;
+    color: #333;
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  @media print {
+    body { background: white; padding: 0; }
+    h1, .print-hint { display: none; }
+    .cards-grid {
+      gap: 10px;
+    }
+    .card {
+      box-shadow: none;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  }
+</style>
+</head>
+<body>
+
+<h1>功夫之星武道馆 · 学员打卡签到卡</h1>
+<div class="print-hint">打印提示：Ctrl+P / Cmd+P → 勾选"背景图形" → 纸张 A4 横向，每页可打印2张</div>
+
+<div class="cards-grid">
+
+  <!-- 卡片模板 × 4（可按需复制） -->
+  <div class="card">
+    <div class="card-header">
+      <div class="logo-area">
+        <div class="logo-icon">功</div>
+        <div>
+          <div class="logo-text">功夫之星</div>
+          <div class="logo-sub">KUNGFU STAR MARTIAL ARTS</div>
+        </div>
+      </div>
+      <div class="card-no">No. ______</div>
+    </div>
+
+    <div class="student-info">
+      <div class="info-item">
+        <div class="info-label">学员姓名</div>
+        <div class="info-value"></div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">所在班级</div>
+        <div class="info-value"></div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">开始日期</div>
+        <div class="info-value"></div>
+      </div>
+    </div>
+
+    <div class="punch-title">上课打卡记录（共30次）</div>
+    <div class="punch-grid">
+      <div class="punch-cell">1</div>
+      <div class="punch-cell">2</div>
+      <div class="punch-cell">3</div>
+      <div class="punch-cell">4</div>
+      <div class="punch-cell">5</div>
+      <div class="punch-cell">6</div>
+      <div class="punch-cell">7</div>
+      <div class="punch-cell">8</div>
+      <div class="punch-cell">9</div>
+      <div class="punch-cell special">10⭐</div>
+      <div class="punch-cell">11</div>
+      <div class="punch-cell">12</div>
+      <div class="punch-cell">13</div>
+      <div class="punch-cell">14</div>
+      <div class="punch-cell">15</div>
+      <div class="punch-cell">16</div>
+      <div class="punch-cell">17</div>
+      <div class="punch-cell">18</div>
+      <div class="punch-cell">19</div>
+      <div class="punch-cell special">20⭐</div>
+      <div class="punch-cell">21</div>
+      <div class="punch-cell">22</div>
+      <div class="punch-cell">23</div>
+      <div class="punch-cell">24</div>
+      <div class="punch-cell">25</div>
+      <div class="punch-cell">26</div>
+      <div class="punch-cell">27</div>
+      <div class="punch-cell">28</div>
+      <div class="punch-cell">29</div>
+      <div class="punch-cell special">30🏆</div>
+    </div>
+
+    <div class="card-footer">
+      <div class="reward-info">
+        每次上课打卡 <span>+1分</span> · 满10次奖励 <span>+5分</span><br>
+        满30次奖励 <span>+20分</span> · 积分可兑换好礼
+      </div>
+      <div class="qr-placeholder">扫码<br>积分<br>商城</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="logo-area">
+        <div class="logo-icon">功</div>
+        <div>
+          <div class="logo-text">功夫之星</div>
+          <div class="logo-sub">KUNGFU STAR MARTIAL ARTS</div>
+        </div>
+      </div>
+      <div class="card-no">No. ______</div>
+    </div>
+    <div class="student-info">
+      <div class="info-item">
+        <div class="info-label">学员姓名</div>
+        <div class="info-value"></div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">所在班级</div>
+        <div class="info-value"></div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">开始日期</div>
+        <div class="info-value"></div>
+      </div>
+    </div>
+    <div class="punch-title">上课打卡记录（共30次）</div>
+    <div class="punch-grid">
+      <div class="punch-cell">1</div><div class="punch-cell">2</div><div class="punch-cell">3</div><div class="punch-cell">4</div><div class="punch-cell">5</div><div class="punch-cell">6</div><div class="punch-cell">7</div><div class="punch-cell">8</div><div class="punch-cell">9</div><div class="punch-cell special">10⭐</div>
+      <div class="punch-cell">11</div><div class="punch-cell">12</div><div class="punch-cell">13</div><div class="punch-cell">14</div><div class="punch-cell">15</div><div class="punch-cell">16</div><div class="punch-cell">17</div><div class="punch-cell">18</div><div class="punch-cell">19</div><div class="punch-cell special">20⭐</div>
+      <div class="punch-cell">21</div><div class="punch-cell">22</div><div class="punch-cell">23</div><div class="punch-cell">24</div><div class="punch-cell">25</div><div class="punch-cell">26</div><div class="punch-cell">27</div><div class="punch-cell">28</div><div class="punch-cell">29</div><div class="punch-cell special">30🏆</div>
+    </div>
+    <div class="card-footer">
+      <div class="reward-info">每次上课打卡 <span>+1分</span> · 满10次奖励 <span>+5分</span><br>满30次奖励 <span>+20分</span> · 积分可兑换好礼</div>
+      <div class="qr-placeholder">扫码<br>积分<br>商城</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="logo-area">
+        <div class="logo-icon">功</div>
+        <div>
+          <div class="logo-text">功夫之星</div>
+          <div class="logo-sub">KUNGFU STAR MARTIAL ARTS</div>
+        </div>
+      </div>
+      <div class="card-no">No. ______</div>
+    </div>
+    <div class="student-info">
+      <div class="info-item"><div class="info-label">学员姓名</div><div class="info-value"></div></div>
+      <div class="info-item"><div class="info-label">所在班级</div><div class="info-value"></div></div>
+      <div class="info-item"><div class="info-label">开始日期</div><div class="info-value"></div></div>
+    </div>
+    <div class="punch-title">上课打卡记录（共30次）</div>
+    <div class="punch-grid">
+      <div class="punch-cell">1</div><div class="punch-cell">2</div><div class="punch-cell">3</div><div class="punch-cell">4</div><div class="punch-cell">5</div><div class="punch-cell">6</div><div class="punch-cell">7</div><div class="punch-cell">8</div><div class="punch-cell">9</div><div class="punch-cell special">10⭐</div>
+      <div class="punch-cell">11</div><div class="punch-cell">12</div><div class="punch-cell">13</div><div class="punch-cell">14</div><div class="punch-cell">15</div><div class="punch-cell">16</div><div class="punch-cell">17</div><div class="punch-cell">18</div><div class="punch-cell">19</div><div class="punch-cell special">20⭐</div>
+      <div class="punch-cell">21</div><div class="punch-cell">22</div><div class="punch-cell">23</div><div class="punch-cell">24</div><div class="punch-cell">25</div><div class="punch-cell">26</div><div class="punch-cell">27</div><div class="punch-cell">28</div><div class="punch-cell">29</div><div class="punch-cell special">30🏆</div>
+    </div>
+    <div class="card-footer">
+      <div class="reward-info">每次上课打卡 <span>+1分</span> · 满10次奖励 <span>+5分</span><br>满30次奖励 <span>+20分</span> · 积分可兑换好礼</div>
+      <div class="qr-placeholder">扫码<br>积分<br>商城</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="logo-area">
+        <div class="logo-icon">功</div>
+        <div>
+          <div class="logo-text">功夫之星</div>
+          <div class="logo-sub">KUNGFU STAR MARTIAL ARTS</div>
+        </div>
+      </div>
+      <div class="card-no">No. ______</div>
+    </div>
+    <div class="student-info">
+      <div class="info-item"><div class="info-label">学员姓名</div><div class="info-value"></div></div>
+      <div class="info-item"><div class="info-label">所在班级</div><div class="info-value"></div></div>
+      <div class="info-item"><div class="info-label">开始日期</div><div class="info-value"></div></div>
+    </div>
+    <div class="punch-title">上课打卡记录（共30次）</div>
+    <div class="punch-grid">
+      <div class="punch-cell">1</div><div class="punch-cell">2</div><div class="punch-cell">3</div><div class="punch-cell">4</div><div class="punch-cell">5</div><div class="punch-cell">6</div><div class="punch-cell">7</div><div class="punch-cell">8</div><div class="punch-cell">9</div><div class="punch-cell special">10⭐</div>
+      <div class="punch-cell">11</div><div class="punch-cell">12</div><div class="punch-cell">13</div><div class="punch-cell">14</div><div class="punch-cell">15</div><div class="punch-cell">16</div><div class="punch-cell">17</div><div class="punch-cell">18</div><div class="punch-cell">19</div><div class="punch-cell special">20⭐</div>
+      <div class="punch-cell">21</div><div class="punch-cell">22</div><div class="punch-cell">23</div><div class="punch-cell">24</div><div class="punch-cell">25</div><div class="punch-cell">26</div><div class="punch-cell">27</div><div class="punch-cell">28</div><div class="punch-cell">29</div><div class="punch-cell special">30🏆</div>
+    </div>
+    <div class="card-footer">
+      <div class="reward-info">每次上课打卡 <span>+1分</span> · 满10次奖励 <span>+5分</span><br>满30次奖励 <span>+20分</span> · 积分可兑换好礼</div>
+      <div class="qr-placeholder">扫码<br>积分<br>商城</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
