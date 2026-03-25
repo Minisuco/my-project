@@ -2,409 +2,402 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<title>前洲小学跆拳道服装售卖</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>功夫之星 · 2026年春学期课程表</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    background: #1a1a2e;
-    font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 30px;
+  :root {
+    --primary: #1a1a2e;
+    --accent: #e94560;
+    --wushu: #d35400;
+    --wushu-bg: #fdebd0;
+    --tkd: #2980b9;
+    --tkd-bg: #d6eaf8;
+    --parkour: #27ae60;
+    --parkour-bg: #d5f5e3;
+    --mixed: #8e44ad;
+    --mixed-bg: #e8daef;
+    --delay: #e67e22;
+    --delay-bg: #fef9e7;
   }
-  .poster {
-    width: 520px;
-    background: linear-gradient(160deg, #0d0d0d 0%, #1a0505 50%, #0d0d0d 100%);
-    border-radius: 24px;
-    overflow: hidden;
-    position: relative;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,215,0,0.2);
-  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; background: #f0f2f5; color: #333; }
 
-  /* 顶部装饰光 */
-  .poster::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 50%;
-    transform: translateX(-50%);
-    width: 300px; height: 2px;
-    background: linear-gradient(90deg, transparent, #ffd700, transparent);
-  }
-
-  /* Header */
+  /* ── Header ── */
   .header {
-    padding: 32px 32px 24px;
-    text-align: center;
-    position: relative;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    color: white; padding: 28px 20px 20px; text-align: center;
   }
-  .header-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: rgba(255,215,0,0.1);
-    border: 1px solid rgba(255,215,0,0.3);
-    border-radius: 20px;
-    padding: 4px 14px;
-    font-size: 11px;
-    color: #ffd700;
-    letter-spacing: 2px;
-    margin-bottom: 14px;
+  .header h1 { font-size: clamp(18px, 4vw, 28px); font-weight: 700; letter-spacing: 2px; }
+  .header p { margin-top: 6px; font-size: 13px; opacity: 0.7; }
+  .header .stats { display: flex; justify-content: center; gap: 24px; margin-top: 16px; flex-wrap: wrap; }
+  .header .stat { text-align: center; }
+  .header .stat .num { font-size: 24px; font-weight: 700; color: #e94560; }
+  .header .stat .label { font-size: 11px; opacity: 0.6; margin-top: 2px; }
+
+  /* ── Filters ── */
+  .filters {
+    background: white; padding: 12px 16px; display: flex; gap: 8px;
+    flex-wrap: wrap; align-items: center; border-bottom: 1px solid #eee;
+    position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   }
-  .header-badge::before { content: '★'; }
-  .header-badge::after  { content: '★'; }
-  .title-main {
-    font-size: 28px;
-    font-weight: 900;
-    color: #fff;
-    letter-spacing: 2px;
-    text-shadow: 0 0 30px rgba(255,215,0,0.4);
-    line-height: 1.2;
-    margin-bottom: 8px;
+  .filters label { font-size: 12px; color: #888; margin-right: 4px; }
+  .filter-btn {
+    padding: 5px 14px; border-radius: 20px; border: 1.5px solid #ddd;
+    background: white; font-size: 12px; cursor: pointer; transition: all 0.2s;
+    font-family: inherit; color: #555;
   }
-  .title-sub {
-    font-size: 13px;
-    color: rgba(255,255,255,0.4);
-    letter-spacing: 4px;
-    margin-top: 6px;
+  .filter-btn:hover { border-color: #e94560; color: #e94560; }
+  .filter-btn.active { background: #e94560; border-color: #e94560; color: white; font-weight: 600; }
+  .filter-btn.wushu.active  { background: var(--wushu); border-color: var(--wushu); }
+  .filter-btn.tkd.active    { background: var(--tkd); border-color: var(--tkd); }
+  .filter-btn.parkour.active{ background: var(--parkour); border-color: var(--parkour); }
+
+  /* ── Grid ── */
+  .grid { padding: 16px; display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; }
+
+  /* ── Card ── */
+  .card {
+    background: white; border-radius: 12px; overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07); transition: transform 0.2s, box-shadow 0.2s;
   }
-  .title-highlight {
-    color: #ffd700;
+  .card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.12); }
+  .card.hidden { display: none; }
+
+  .card-header {
+    padding: 14px 16px 12px;
+    display: flex; align-items: flex-start; gap: 12px;
+  }
+  .card-header.wushu   { background: linear-gradient(135deg, #d35400, #e67e22); }
+  .card-header.tkd     { background: linear-gradient(135deg, #2980b9, #3498db); }
+  .card-header.parkour { background: linear-gradient(135deg, #27ae60, #2ecc71); }
+  .card-header.mixed   { background: linear-gradient(135deg, #8e44ad, #9b59b6); }
+  .card-header .icon { font-size: 28px; line-height: 1; }
+  .card-header .info { flex: 1; }
+  .card-header .school { font-size: 15px; font-weight: 700; color: white; }
+  .card-header .sub { font-size: 12px; color: rgba(255,255,255,0.8); margin-top: 3px; }
+  .card-header .tag {
+    background: rgba(255,255,255,0.25); color: white;
+    border-radius: 6px; padding: 2px 8px; font-size: 11px; font-weight: 600;
+    white-space: nowrap; margin-top: 2px; display: inline-block;
   }
 
-  /* 产品信息 */
-  .product-section {
-    padding: 0 28px 20px;
+  .card-body { padding: 0; }
+
+  /* ── Weekly Table ── */
+  .week-table { width: 100%; border-collapse: collapse; font-size: 11.5px; }
+  .week-table th {
+    background: #f8f9fa; color: #888; font-weight: 600;
+    padding: 6px 4px; text-align: center; border-bottom: 1px solid #eee;
   }
-  .section-title {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 13px;
-    color: #ffd700;
-    letter-spacing: 2px;
-    font-weight: 700;
-    margin-bottom: 16px;
+  .week-table td {
+    padding: 5px 4px; text-align: center; border-bottom: 1px solid #f0f0f0;
+    vertical-align: middle; line-height: 1.4;
   }
-  .section-title::before {
-    content: '';
-    width: 3px; height: 14px;
-    background: #ffd700;
-    border-radius: 2px;
+  .week-table tr:last-child td { border-bottom: none; }
+  .week-table td:first-child { color: #999; font-size: 10.5px; background: #fafafa; width: 60px; }
+  .week-table td:nth-child(2) { color: #bbb; font-size: 10px; width: 70px; }
+  .cell-class {
+    display: inline-block; background: #f0f4ff; color: #3a5bd9;
+    border-radius: 4px; padding: 1px 5px; margin: 1px; font-size: 10.5px; white-space: nowrap;
+  }
+  .cell-class.wushu   { background: var(--wushu-bg); color: var(--wushu); }
+  .cell-class.tkd     { background: var(--tkd-bg); color: var(--tkd); }
+  .cell-class.parkour { background: var(--parkour-bg); color: var(--parkour); }
+  .cell-class.delay   { background: var(--delay-bg); color: var(--delay); }
+  .cell-empty { color: #e0e0e0; }
+
+  /* ── Day columns color ── */
+  .day-mon { background: #fffde7; }
+  .day-tue { background: #fce4ec; }
+  .day-wed { background: #e3f2fd; }
+  .day-thu { background: #e8f5e9; }
+  .day-fri { background: #f3e5f5; }
+
+  /* ── Note bar ── */
+  .note-bar {
+    padding: 8px 14px; font-size: 11px; color: #999;
+    border-top: 1px solid #f0f0f0; background: #fafafa;
   }
 
-  .product-card {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 16px;
-    padding: 24px;
-    text-align: center;
-  }
-  .product-icon {
-    font-size: 64px;
-    margin-bottom: 16px;
-  }
-  .product-name {
-    font-size: 20px;
-    font-weight: 800;
-    color: #fff;
-    margin-bottom: 8px;
-  }
-  .product-desc {
-    font-size: 12px;
-    color: rgba(255,255,255,0.5);
-    line-height: 1.6;
-    margin-bottom: 20px;
-  }
-  .price-box {
-    background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,215,0,0.05));
-    border: 2px solid rgba(255,215,0,0.3);
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 20px;
-  }
-  .price-label {
-    font-size: 11px;
-    color: rgba(255,215,0,0.7);
-    letter-spacing: 2px;
-    margin-bottom: 6px;
-  }
-  .price-value {
-    font-size: 42px;
-    font-weight: 900;
-    color: #ffd700;
-    line-height: 1;
-    text-shadow: 0 0 30px rgba(255,215,0,0.3);
-  }
-  .price-unit {
-    font-size: 16px;
-    font-weight: 600;
-    color: rgba(255,215,0,0.8);
-  }
-  .price-tag {
-    display: inline-block;
-    background: #ff4757;
-    color: #fff;
-    font-size: 11px;
-    padding: 4px 12px;
-    border-radius: 20px;
-    margin-left: 10px;
-    font-weight: 700;
+  /* ── Footer ── */
+  footer {
+    text-align: center; padding: 24px; font-size: 12px; color: #bbb;
   }
 
-  /* 规格选择 */
-  .specs-section {
-    padding: 0 28px 20px;
-  }
-  .specs-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-  }
-  .spec-item {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 10px;
-    padding: 12px 8px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .spec-item:hover {
-    background: rgba(255,215,0,0.1);
-    border-color: rgba(255,215,0,0.4);
-  }
-  .spec-size {
-    font-size: 18px;
-    font-weight: 800;
-    color: #fff;
-    margin-bottom: 4px;
-  }
-  .spec-desc {
-    font-size: 10px;
-    color: rgba(255,255,255,0.4);
-  }
-
-  /* 分隔线 */
-  .divider {
-    margin: 0 28px 20px;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255,215,0,0.2), transparent);
-  }
-
-  /* 温馨提示 */
-  .tips-box {
-    margin: 0 28px 24px;
-    background: rgba(255,255,255,0.03);
-    border-radius: 12px;
-    padding: 14px 16px;
-    border: 1px solid rgba(255,255,255,0.06);
-  }
-  .tips-title {
-    font-size: 11px;
-    color: rgba(255,215,0,0.7);
-    letter-spacing: 1px;
-    margin-bottom: 8px;
-    font-weight: 600;
-  }
-  .tips-list {
-    list-style: none;
-  }
-  .tips-list li {
-    font-size: 11px;
-    color: rgba(255,255,255,0.45);
-    line-height: 1.8;
-    padding-left: 12px;
-    position: relative;
-  }
-  .tips-list li::before {
-    content: '·';
-    position: absolute;
-    left: 0;
-    color: #ffd700;
-  }
-
-  /* CTA按钮 */
-  .cta-section {
-    padding: 0 28px 28px;
-  }
-  .cta-btn {
-    display: block;
-    width: 100%;
-    background: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%);
-    color: #1a0a00;
-    font-size: 18px;
-    font-weight: 800;
-    padding: 16px;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    text-decoration: none;
-    text-align: center;
-    box-shadow: 0 8px 20px rgba(255,215,0,0.3);
-    transition: all 0.3s;
-  }
-  .cta-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 28px rgba(255,215,0,0.4);
-  }
-  .cta-sub {
-    text-align: center;
-    font-size: 11px;
-    color: rgba(255,255,255,0.4);
-    margin-top: 12px;
-  }
-
-  /* Footer */
-  .footer {
-    background: rgba(0,0,0,0.4);
-    padding: 14px 28px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-top: 1px solid rgba(255,255,255,0.06);
-  }
-  .footer-logo {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .footer-logo-icon {
-    width: 28px; height: 28px;
-    background: linear-gradient(135deg, #ffd700, #ff8c00);
-    border-radius: 6px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px; font-weight: 800; color: #1a0a00;
-  }
-  .footer-logo-text {
-    font-size: 13px; font-weight: 700; color: #ffd700;
-  }
-  .footer-logo-sub { font-size: 8px; color: rgba(255,255,255,0.3); letter-spacing: 1px; }
-  .footer-hotline { text-align: right; }
-  .footer-hotline-label { font-size: 9px; color: rgba(255,255,255,0.3); margin-bottom: 2px; }
-  .footer-hotline-num { font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.7); letter-spacing: 1px; }
-
-  @media print {
-    body { background: white; }
-    .poster { box-shadow: none; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  @media (max-width: 480px) {
+    .grid { grid-template-columns: 1fr; padding: 10px; }
+    .week-table { font-size: 10.5px; }
   }
 </style>
 </head>
 <body>
-<div class="poster">
 
-  <!-- Header -->
-  <div class="header">
-    <div class="header-badge">限时特惠订购</div>
-    <div class="title-main">
-      110-170<br><span class="title-highlight">跆拳道道服</span>
-    </div>
-    <div class="title-sub">TAKEWONDO UNIFORM · LIMITED OFFER</div>
+<div class="header">
+  <h1>🥋 功夫之星 · 2026年春学期课程表</h1>
+  <p>无锡市 · 2026年3月—6月</p>
+  <div class="stats">
+    <div class="stat"><div class="num">10</div><div class="label">合作学校</div></div>
+    <div class="stat"><div class="num">3</div><div class="label">课程类型</div></div>
+    <div class="stat"><div class="num">9</div><div class="label">授课老师</div></div>
+    <div class="stat"><div class="num">101</div><div class="label">课程节次</div></div>
   </div>
-
-  <!-- 产品信息 -->
-  <div class="product-section">
-    <div class="section-title">产品介绍</div>
-    <div class="product-card">
-      <div class="product-icon">🥋</div>
-      <div class="product-name">功夫之星专业道服</div>
-      <div class="product-desc">
-        孩子训练更安全、更体面,一套到位
-      </div>
-
-      <div class="price-box">
-        <div class="price-label">限时特惠价</div>
-        <div class="price-value">
-          <span class="price-unit">¥</span>100
-        </div>
-        <div style="font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 8px;">
-          <span style="text-decoration: line-through;">原价¥200</span> · 节省¥100
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 规格选择 -->
-  <div class="specs-section">
-    <div class="section-title">尺码参考(按身高选)</div>
-    <div class="specs-grid">
-      <div class="spec-item">
-        <div class="spec-size">110</div>
-        <div class="spec-desc">身高115cm以下</div>
-      </div>
-      <div class="spec-item">
-        <div class="spec-size">120</div>
-        <div class="spec-desc">身高125cm以下</div>
-      </div>
-      <div class="spec-item">
-        <div class="spec-size">130</div>
-        <div class="spec-desc">身高125cm及以上</div>
-      </div>
-      <div class="spec-item">
-        <div class="spec-size">140</div>
-        <div class="spec-desc">身高135cm及以上</div>
-      </div>
-      <div class="spec-item">
-        <div class="spec-size">150</div>
-        <div class="spec-desc">身高145cm及以上</div>
-      </div>
-      <div class="spec-item">
-        <div class="spec-size">160</div>
-        <div class="spec-desc">身高155cm及以上</div>
-      </div>
-      <div class="spec-item" style="grid-column: span 1;">
-        <div class="spec-size">170</div>
-        <div class="spec-desc">身高165cm及以上</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="divider"></div>
-
-  <!-- 产品特点 -->
-  <div class="tips-box" style="margin: 0 28px 16px;">
-    <div class="tips-title">产品特点</div>
-    <ul class="tips-list">
-      <li>专业跆拳道面料,透气不闷汗</li>
-      <li>宽松剪裁,动作舒展不束缚</li>
-      <li>统一着装,仪式感强、更守礼仪</li>
-      <li>尺码提示:道服版型偏大,按孩子日常正常身高选码即可</li>
-    </ul>
-  </div>
-
-  <!-- 温馨提示 -->
-  <div class="tips-box">
-    <div class="tips-title">下单备注</div>
-    <ul class="tips-list">
-      <li>姓名 + 班级 + 身高 + 选穿尺码</li>
-      <li>现场核对领取,便捷省心</li>
-    </ul>
-  </div>
-
-  <!-- CTA按钮 -->
-  <div class="cta-section">
-    <a href="https://party.hudongba.com/party/6uua7.html" class="cta-btn" target="_blank">
-      🎁 立即下单订购
-    </a>
-    <div class="cta-sub">限时特惠 · 点击跳转互动吧完成报名</div>
-  </div>
-
-  <!-- Footer -->
-  <div class="footer">
-    <div class="footer-logo">
-      <div class="footer-logo-icon">功</div>
-      <div>
-        <div class="footer-logo-text">功夫之星武道馆</div>
-        <div class="footer-logo-sub">KUNGFU STAR MARTIAL ARTS</div>
-      </div>
-    </div>
-    <div class="footer-hotline">
-      <div class="footer-hotline-label">咨询热线</div>
-      <div class="footer-hotline-num">0510-82405444</div>
-    </div>
-  </div>
-
 </div>
+
+<div class="filters">
+  <label>筛选：</label>
+  <button class="filter-btn active" onclick="filter('all', this)">全部</button>
+  <button class="filter-btn wushu" onclick="filter('wushu', this)">🥋 武术</button>
+  <button class="filter-btn tkd" onclick="filter('tkd', this)">🏅 跆拳道</button>
+  <button class="filter-btn parkour" onclick="filter('parkour', this)">🤸 跑酷</button>
+</div>
+
+<div class="grid" id="grid">
+
+  <!-- ① 省锡中一小 · 武术 -->
+  <div class="card" data-type="wushu">
+    <div class="card-header wushu">
+      <div class="icon">🥋</div>
+      <div class="info">
+        <div class="school">省锡中一小</div>
+        <div class="sub">负责人：杜兴国</div>
+        <span class="tag">武术</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <table class="week-table">
+        <tr><th>节次</th><th>时间</th><th class="day-mon">周一</th><th class="day-tue">周二</th><th class="day-wed">周三</th><th class="day-thu">周四</th><th class="day-fri">周五</th></tr>
+        <tr><td>下午4</td><td>12:50-13:30</td><td class="day-mon"><span class="cell-class wushu">四9</span></td><td class="day-tue"><span class="cell-class wushu">四3</span></td><td class="day-wed"><span class="cell-class wushu">四10</span></td><td class="day-thu"><span class="cell-class wushu">四2</span></td><td class="day-fri"><span class="cell-class wushu">四4</span></td></tr>
+        <tr><td>下午5</td><td>13:45-14:25</td><td class="day-mon"><span class="cell-class wushu">四8</span></td><td class="day-tue"><span class="cell-empty">—</span></td><td class="day-wed"><span class="cell-class wushu">四7</span></td><td class="day-thu"><span class="cell-empty">—</span></td><td class="day-fri"><span class="cell-class wushu">四1</span></td></tr>
+        <tr><td>下午6</td><td>14:55-15:35</td><td class="day-mon"><span class="cell-empty">—</span></td><td class="day-tue"><span class="cell-empty">—</span></td><td class="day-wed"><span class="cell-empty">—</span></td><td class="day-thu"><span class="cell-class wushu">四5</span></td><td class="day-fri"><span class="cell-class wushu">四6</span></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ② 省锡中三小 · 武术 -->
+  <div class="card" data-type="wushu">
+    <div class="card-header wushu">
+      <div class="icon">🥋</div>
+      <div class="info">
+        <div class="school">省锡中三小</div>
+        <div class="sub">负责人：刘博</div>
+        <span class="tag">武术</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <table class="week-table">
+        <tr><th>节次</th><th>时间</th><th class="day-mon">周一</th><th class="day-tue">周二</th><th class="day-wed">周三</th><th class="day-thu">周四</th><th class="day-fri">周五</th></tr>
+        <tr><td>上午2</td><td>9:45-10:25</td><td class="day-mon"><span class="cell-empty">—</span></td><td class="day-tue"><span class="cell-class wushu">一8</span></td><td class="day-wed"><span class="cell-class wushu">一9 一11</span></td><td class="day-thu"><span class="cell-class wushu">一2</span></td><td class="day-fri"><span class="cell-empty">—</span></td></tr>
+        <tr><td>上午3</td><td>10:40-11:20</td><td class="day-mon"><span class="cell-empty">—</span></td><td class="day-tue"><span class="cell-class wushu">二5 二2</span></td><td class="day-wed"><span class="cell-class wushu">二6 二8</span></td><td class="day-thu"><span class="cell-class wushu">一3 二7</span></td><td class="day-fri"><span class="cell-class wushu">一4</span></td></tr>
+        <tr><td>下午4</td><td>12:50-13:30</td><td class="day-mon"><span class="cell-empty">—</span></td><td class="day-tue"><span class="cell-class wushu">一1</span></td><td class="day-wed"><span class="cell-class wushu">二4 一6</span></td><td class="day-thu"><span class="cell-class wushu">一10</span></td><td class="day-fri"><span class="cell-class wushu">二3 二11</span></td></tr>
+        <tr><td>下午5</td><td>13:45-14:25</td><td class="day-mon"><span class="cell-empty">—</span></td><td class="day-tue"><span class="cell-class wushu">二1 二9</span></td><td class="day-wed"><span class="cell-class wushu">二10</span></td><td class="day-thu"><span class="cell-class wushu">一5</span></td><td class="day-fri"><span class="cell-class wushu">二12 一7</span></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ③ 省锡中二小 · 跆拳道 -->
+  <div class="card" data-type="tkd">
+    <div class="card-header tkd">
+      <div class="icon">🏅</div>
+      <div class="info">
+        <div class="school">省锡中二小</div>
+        <div class="sub">负责人：程瑞胜 / 李嘉炜</div>
+        <span class="tag">跆拳道</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <table class="week-table">
+        <tr><th>节次</th><th>时间</th><th class="day-mon">周一</th><th class="day-tue">周二</th><th class="day-wed">周三</th><th class="day-thu">周四</th><th class="day-fri">周五</th></tr>
+        <tr><td>上午2</td><td>9:45-10:25</td><td class="day-mon"><span class="cell-empty">—</span></td><td class="day-tue"><span class="cell-class tkd">二(16)</span></td><td class="day-wed"><span class="cell-empty">—</span></td><td class="day-thu"><span class="cell-empty">—</span></td><td class="day-fri"><span class="cell-empty">—</span></td></tr>
+        <tr><td>上午3</td><td>10:40-11:20</td><td class="day-mon"><span class="cell-empty">—</span></td><td class="day-tue"><span class="cell-class tkd">二(6)</span></td><td class="day-wed"><span class="cell-class tkd">二(22)</span></td><td class="day-thu"><span class="cell-empty">—</span></td><td class="day-fri"><span class="cell-empty">—</span></td></tr>
+        <tr><td>下午1</td><td>12:50-13:30</td><td class="day-mon"><span class="cell-empty">—</span></td><td class="day-tue"><span class="cell-class tkd">二(9) 二(11)</span></td><td class="day-wed"><span class="cell-class tkd">四(7) 四(8)</span></td><td class="day-thu"><span class="cell-class tkd">二(20) 二(21)</span></td><td class="day-fri"><span class="cell-class tkd">四(18)李</span></td></tr>
+        <tr><td>下午2</td><td>13:45-14:25</td><td class="day-mon"><span class="cell-empty">—</span></td><td class="day-tue"><span class="cell-class tkd">二(3) 二(12)</span></td><td class="day-wed"><span class="cell-class tkd">四(16)</span></td><td class="day-thu"><span class="cell-class tkd">二(19)</span></td><td class="day-fri"><span class="cell-class tkd">二(1)李</span></td></tr>
+        <tr><td>下午3</td><td>14:55-15:35</td><td class="day-mon"><span class="cell-empty">—</span></td><td class="day-tue"><span class="cell-empty">—</span></td><td class="day-wed"><span class="cell-empty">—</span></td><td class="day-thu"><span class="cell-class tkd">四(19)李</span></td><td class="day-fri"><span class="cell-empty">—</span></td></tr>
+      </table>
+    </div>
+    <div class="note-bar">程=程瑞胜，李=李嘉炜（未标注默认程瑞胜）</div>
+  </div>
+
+  <!-- ④ 钱桥小学 · 跑酷 -->
+  <div class="card" data-type="parkour">
+    <div class="card-header parkour">
+      <div class="icon">🤸</div>
+      <div class="info">
+        <div class="school">钱桥小学</div>
+        <div class="sub">负责人：李华鹏</div>
+        <span class="tag">跑酷</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <table class="week-table">
+        <tr><th>节次</th><th>时间</th><th class="day-mon">周一</th><th class="day-tue">周二</th><th class="day-wed">周三</th><th class="day-thu">周四</th><th class="day-fri">周五</th></tr>
+        <tr><td>上午3</td><td>10:25-11:05</td><td class="day-mon"><span class="cell-empty">—</span></td><td class="day-tue"><span class="cell-class parkour">一3</span></td><td class="day-wed"><span class="cell-class parkour">一7</span></td><td class="day-thu"><span class="cell-class parkour">一4</span></td><td class="day-fri"><span class="cell-class parkour">一11</span></td></tr>
+        <tr><td>下午4</td><td>12:30-13:10</td><td class="day-mon"><span class="cell-empty">—</span></td><td class="day-tue"><span class="cell-class parkour">一5</span></td><td class="day-wed"><span class="cell-class parkour">一2</span></td><td class="day-thu"><span class="cell-class parkour">一1</span></td><td class="day-fri"><span class="cell-class parkour">一8</span></td></tr>
+        <tr><td>下午5</td><td>13:25-14:05</td><td class="day-mon"><span class="cell-empty">—</span></td><td class="day-tue"><span class="cell-class parkour">一12</span></td><td class="day-wed"><span class="cell-class parkour">一9</span></td><td class="day-thu"><span class="cell-class parkour">一6</span></td><td class="day-fri"><span class="cell-empty">—</span></td></tr>
+        <tr><td>下午6</td><td>14:20-15:00</td><td class="day-mon"><span class="cell-empty">—</span></td><td class="day-tue"><span class="cell-empty">—</span></td><td class="day-wed"><span class="cell-class parkour">一10</span></td><td class="day-thu"><span class="cell-empty">—</span></td><td class="day-fri"><span class="cell-empty">—</span></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ⑤ 堰桥小学 · 跑酷 -->
+  <div class="card" data-type="parkour">
+    <div class="card-header parkour">
+      <div class="icon">🤸</div>
+      <div class="info">
+        <div class="school">堰桥小学</div>
+        <div class="sub">负责人：王慈官</div>
+        <span class="tag">跑酷</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <table class="week-table">
+        <tr><th>节次</th><th>时间</th><th class="day-mon">周一</th><th class="day-tue">周二</th><th class="day-wed">周三</th><th class="day-thu">周四</th><th class="day-fri">周五</th></tr>
+        <tr><td>上午2</td><td>9:45-10:25</td><td class="day-mon"><span class="cell-empty">—</span></td><td class="day-tue"><span class="cell-empty">—</span></td><td class="day-wed"><span class="cell-class parkour">三12</span></td><td class="day-thu"><span class="cell-empty">—</span></td><td class="day-fri"><span class="cell-empty">—</span></td></tr>
+        <tr><td>上午3</td><td>10:40-11:20</td><td class="day-mon"><span class="cell-empty">—</span></td><td class="day-tue"><span class="cell-class parkour">三11</span></td><td class="day-wed"><span class="cell-class parkour">三9</span></td><td class="day-thu"><span class="cell-class parkour">三10</span></td><td class="day-fri"><span class="cell-empty">—</span></td></tr>
+        <tr><td>下午4</td><td>12:50-13:30</td><td class="day-mon"><span class="cell-empty">—</span></td><td class="day-tue"><span class="cell-class parkour">三13</span></td><td class="day-wed"><span class="cell-class parkour">三6</span></td><td class="day-thu"><span class="cell-class parkour">三2</span></td><td class="day-fri"><span class="cell-class parkour">三7</span></td></tr>
+        <tr><td>下午5</td><td>13:45-14:25</td><td class="day-mon"><span class="cell-empty">—</span></td><td class="day-tue"><span class="cell-class parkour">三8</span></td><td class="day-wed"><span class="cell-class parkour">三4</span></td><td class="day-thu"><span class="cell-class parkour">三5</span></td><td class="day-fri"><span class="cell-class parkour">三1</span></td></tr>
+        <tr><td>下午6</td><td>14:55-15:35</td><td class="day-mon"><span class="cell-empty">—</span></td><td class="day-tue"><span class="cell-class parkour">三3</span></td><td class="day-wed"><span class="cell-empty">—</span></td><td class="day-thu"><span class="cell-empty">—</span></td><td class="day-fri"><span class="cell-empty">—</span></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ⑥ 堰桥小学 · 武术 -->
+  <div class="card" data-type="wushu">
+    <div class="card-header wushu">
+      <div class="icon">🥋</div>
+      <div class="info">
+        <div class="school">堰桥小学</div>
+        <div class="sub">负责人：邹思理</div>
+        <span class="tag">武术</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <table class="week-table">
+        <tr><th>节次</th><th>时间</th><th class="day-mon">周一</th><th class="day-tue">周二</th><th class="day-wed">周三</th><th class="day-thu">周四</th><th class="day-fri">周五</th></tr>
+        <tr><td>上午3</td><td>10:40-11:20</td><td class="day-mon"><span class="cell-empty">—</span></td><td class="day-tue"><span class="cell-class wushu">二9</span></td><td class="day-wed"><span class="cell-empty">—</span></td><td class="day-thu"><span class="cell-empty">—</span></td><td class="day-fri"><span class="cell-empty">—</span></td></tr>
+        <tr><td>下午5</td><td>13:45-14:25</td><td class="day-mon"><span class="cell-empty">—</span></td><td class="day-tue"><span class="cell-class wushu">二10</span></td><td class="day-wed"><span class="cell-class wushu">一11</span></td><td class="day-thu"><span class="cell-class wushu">一12</span></td><td class="day-fri"><span class="cell-empty">—</span></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ⑦ 前洲小学 · 跆拳道 -->
+  <div class="card" data-type="tkd">
+    <div class="card-header tkd">
+      <div class="icon">🏅</div>
+      <div class="info">
+        <div class="school">前洲小学</div>
+        <div class="sub">负责人：代梦瑞</div>
+        <span class="tag">跆拳道</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div style="padding:6px 14px 2px;font-size:11px;color:#888;font-weight:600;">一年级（单周）</div>
+      <table class="week-table">
+        <tr><th>节次</th><th>时间</th><th class="day-mon">周一</th><th class="day-tue">周二</th><th class="day-wed">周三</th><th class="day-thu">周四</th><th class="day-fri">周五</th></tr>
+        <tr><td>上午1</td><td>08:20-09:00</td><td class="day-mon"><span class="cell-empty">—</span></td><td class="day-tue"><span class="cell-class tkd">一2</span></td><td class="day-wed"><span class="cell-empty">—</span></td><td class="day-thu"><span class="cell-class tkd">一3</span></td><td class="day-fri"><span class="cell-empty">—</span></td></tr>
+        <tr><td>上午2</td><td>09:10-09:55</td><td class="day-mon"><span class="cell-empty">—</span></td><td class="day-tue"><span class="cell-empty">—</span></td><td class="day-wed"><span class="cell-class tkd">一5</span></td><td class="day-thu"><span class="cell-empty">—</span></td><td class="day-fri"><span class="cell-class tkd">一6</span></td></tr>
+        <tr><td>上午3</td><td>10:25-11:05</td><td class="day-mon"><span class="cell-empty">—</span></td><td class="day-tue"><span class="cell-empty">—</span></td><td class="day-wed"><span class="cell-class tkd">一9</span></td><td class="day-thu"><span class="cell-empty">—</span></td><td class="day-fri"><span class="cell-class tkd">一4</span></td></tr>
+        <tr><td>下午4</td><td>12:45-13:25</td><td class="day-mon"><span class="cell-empty">—</span></td><td class="day-tue"><span class="cell-empty">—</span></td><td class="day-wed"><span class="cell-class tkd">一10</span></td><td class="day-thu"><span class="cell-empty">—</span></td><td class="day-fri"><span class="cell-empty">—</span></td></tr>
+        <tr><td>下午5</td><td>13:35-14:25</td><td class="day-mon"><span class="cell-empty">—</span></td><td class="day-tue"><span class="cell-empty">—</span></td><td class="day-wed"><span class="cell-class tkd">一7</span></td><td class="day-thu"><span class="cell-empty">—</span></td><td class="day-fri"><span class="cell-class tkd">一1</span></td></tr>
+        <tr><td>下午6</td><td>14:50-15:30</td><td class="day-mon"><span class="cell-empty">—</span></td><td class="day-tue"><span class="cell-empty">—</span></td><td class="day-wed"><span class="cell-empty">—</span></td><td class="day-thu"><span class="cell-empty">—</span></td><td class="day-fri"><span class="cell-class tkd">一11</span></td></tr>
+      </table>
+      <div style="padding:6px 14px 2px;font-size:11px;color:#888;font-weight:600;border-top:1px solid #f0f0f0;margin-top:4px;">二～六年级（每周二、四）</div>
+      <table class="week-table">
+        <tr><th>节次</th><th>时间</th><th class="day-tue" colspan="1">周二</th><th class="day-thu" colspan="1">周四</th></tr>
+        <tr><td>上午2</td><td>09:10-09:55</td><td class="day-tue"><span class="cell-class tkd">二5 二10</span></td><td class="day-thu"><span class="cell-class tkd">二5 二10</span></td></tr>
+        <tr><td>上午3</td><td>10:25-11:05</td><td class="day-tue"><span class="cell-class tkd">三5 三6</span></td><td class="day-thu"><span class="cell-class tkd">三5 三6</span></td></tr>
+        <tr><td>下午4</td><td>12:45-13:25</td><td class="day-tue"><span class="cell-class tkd">四7 四9</span></td><td class="day-thu"><span class="cell-class tkd">四7 四9</span></td></tr>
+        <tr><td>下午5</td><td>13:35-14:25</td><td class="day-tue"><span class="cell-class tkd">五6 五7</span></td><td class="day-thu"><span class="cell-class tkd">五6 五7</span></td></tr>
+        <tr><td>下午6</td><td>14:50-15:30</td><td class="day-tue"><span class="cell-class tkd">六5 六6</span></td><td class="day-thu"><span class="cell-class tkd">六5 六6</span></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ⑧ 省锡中湖滨分校 · 武术+跆拳道 -->
+  <div class="card" data-type="mixed">
+    <div class="card-header mixed">
+      <div class="icon">⚡</div>
+      <div class="info">
+        <div class="school">省锡中湖滨分校</div>
+        <div class="sub">负责人：于玺</div>
+        <span class="tag">武术 + 跆拳道</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <table class="week-table">
+        <tr><th>节次</th><th>时间</th><th class="day-mon">周一</th><th class="day-tue">周二</th><th class="day-wed">周三</th><th class="day-thu">周四</th><th class="day-fri">周五</th></tr>
+        <tr>
+          <td>第9节</td><td>16:45-17:30</td>
+          <td class="day-mon"><span class="cell-class wushu">武术</span><br><span class="cell-class tkd">跆拳道</span></td>
+          <td class="day-tue"><span class="cell-class wushu">武术</span><br><span class="cell-class tkd">跆拳道</span></td>
+          <td class="day-wed"><span class="cell-empty">—</span></td>
+          <td class="day-thu"><span class="cell-class wushu">武术</span><br><span class="cell-class tkd">跆拳道</span></td>
+          <td class="day-fri"><span class="cell-empty">—</span></td>
+        </tr>
+      </table>
+    </div>
+    <div class="note-bar">课后社团 · 高中各年级</div>
+  </div>
+
+  <!-- ⑨ 省锡中西漳分校 · 跆拳道 -->
+  <div class="card" data-type="tkd">
+    <div class="card-header tkd">
+      <div class="icon">🏅</div>
+      <div class="info">
+        <div class="school">省锡中西漳分校</div>
+        <div class="sub">负责人：程龙</div>
+        <span class="tag">跆拳道 + 延时服务</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <table class="week-table">
+        <tr><th>节次</th><th>时间</th><th class="day-mon">周一</th><th class="day-tue">周二</th><th class="day-wed">周三</th><th class="day-thu">周四</th><th class="day-fri">周五</th></tr>
+        <tr><td>第3节</td><td>10:25-11:05</td><td class="day-mon"><span class="cell-empty">—</span></td><td class="day-tue"><span class="cell-empty">—</span></td><td class="day-wed"><span class="cell-empty">—</span></td><td class="day-thu"><span class="cell-class tkd">二4</span></td><td class="day-fri"><span class="cell-empty">—</span></td></tr>
+        <tr><td>第4节</td><td>11:20-12:00</td><td class="day-mon"><span class="cell-empty">—</span></td><td class="day-tue"><span class="cell-empty">—</span></td><td class="day-wed"><span class="cell-empty">—</span></td><td class="day-thu"><span class="cell-class tkd">一4</span></td><td class="day-fri"><span class="cell-empty">—</span></td></tr>
+        <tr><td>第5节</td><td>13:10-13:50</td><td class="day-mon"><span class="cell-empty">—</span></td><td class="day-tue"><span class="cell-empty">—</span></td><td class="day-wed"><span class="cell-empty">—</span></td><td class="day-thu"><span class="cell-class tkd">一1</span></td><td class="day-fri"><span class="cell-empty">—</span></td></tr>
+        <tr><td>第7节</td><td>15:15-16:30</td><td class="day-mon"><span class="cell-empty">—</span></td><td class="day-tue"><span class="cell-class delay">延时服务</span></td><td class="day-wed"><span class="cell-class delay">延时服务</span></td><td class="day-thu"><span class="cell-class delay">延时服务</span></td><td class="day-fri"><span class="cell-class delay">延时服务</span></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ⑩ 省锡中高中本部 · 跆拳道 -->
+  <div class="card" data-type="tkd">
+    <div class="card-header tkd">
+      <div class="icon">🏅</div>
+      <div class="info">
+        <div class="school">省锡中高中本部</div>
+        <div class="sub">负责人：邹思理</div>
+        <span class="tag">跆拳道</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <table class="week-table">
+        <tr><th>时段</th><th>时间</th><th class="day-mon">周一</th><th class="day-tue">周二</th><th class="day-wed">周三</th><th class="day-thu">周四</th><th class="day-fri">周五</th></tr>
+        <tr><td>下午1</td><td>13:15-14:00</td><td class="day-mon"><span class="cell-class tkd">高一</span></td><td class="day-tue"><span class="cell-empty">—</span></td><td class="day-wed"><span class="cell-empty">—</span></td><td class="day-thu"><span class="cell-empty">—</span></td><td class="day-fri"><span class="cell-class tkd">高三</span></td></tr>
+        <tr><td>下午2</td><td>14:10-14:55</td><td class="day-mon"><span class="cell-class tkd">高二</span></td><td class="day-tue"><span class="cell-empty">—</span></td><td class="day-wed"><span class="cell-empty">—</span></td><td class="day-thu"><span class="cell-empty">—</span></td><td class="day-fri"><span class="cell-class tkd">高一</span></td></tr>
+        <tr><td>下午3</td><td>15:05-15:45</td><td class="day-mon"><span class="cell-empty">—</span></td><td class="day-tue"><span class="cell-empty">—</span></td><td class="day-wed"><span class="cell-empty">—</span></td><td class="day-thu"><span class="cell-empty">—</span></td><td class="day-fri"><span class="cell-class tkd">高二</span></td></tr>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /grid -->
+
+<footer>
+  功夫之星武道馆 · 2026年春学期 · 无锡市<br>
+  <span style="font-size:10px;color:#ccc;">数据更新：2026年3月25日</span>
+</footer>
+
+<script>
+function filter(type, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.card').forEach(card => {
+    if (type === 'all' || card.dataset.type === type || (type === 'tkd' && card.dataset.type === 'mixed')) {
+      card.classList.remove('hidden');
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+}
+</script>
 </body>
 </html>
